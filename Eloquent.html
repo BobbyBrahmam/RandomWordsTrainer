@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon" href="icons/favicon.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+  <!-- LOGIN PAGE -->
+  <div id="authContainer" class="auth-container">
+    <div class="auth-card">
+      <h2 class="auth-title">Welcome to Eloquent</h2>
+
+      <!-- INITIAL BUTTONS -->
+      <div id="authOptions">
+        <button class="auth-btn" onclick="showLogin()">Login</button>
+        <button class="auth-btn secondary" onclick="showSignup()">Signup</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="loginForm" class="auth-form hidden">
+        <input type="text" id="loginUser" placeholder="Username or Email">
+        <div class="password-wrapper">
+          <input type="password" id="loginPass" placeholder="Password" autocomplete="off">
+          <span class="toggle-eye" onclick="togglePassword('loginPass', this)">👁</span>
+        </div>
+        <button class="auth-submit" onclick="loginUser()">Login</button>
+        <p class="auth-switch">
+          Don't have an account?
+          <a href="#" onclick="showSignup()">Signup</a>
+        </p>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div id="signupForm" class="auth-form hidden">
+        <input type="text" id="signupUser" placeholder="Username">
+        <input type="email" id="signupEmail" placeholder="Email">
+        <div class="password-wrapper">
+          <input type="password" id="signupPass" placeholder="Password">
+          <span class="toggle-eye" onclick="togglePassword('signupPass', this)">👁</span>
+        </div>
+        <button class="auth-submit" onclick="signupUser()">Signup</button>
+        <p class="auth-switch">
+          Already have an account?
+          <a href="#" onclick="showLogin()">Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <div id="sidebar" class="sidebar">
+      <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+      <div class="sidebar-clip">
+        <div class="sidebar-inner">
+
+          <div class="sidebar-header">
+            <div class="brand-row">
+              <div class="sidebar-controls">
+                <button id="darkToggle" class="dark-toggle-btn">🌙︎</button>
+              </div>
+              <div class="brand">Eloquent</div>
+            </div>
+          </div>
+
+          <div class="sidebar-menu">
+            <div class="menu-item active" onclick="showPage('learnPage', this)">
+              <span>Random Word Trainer</span>
+            </div>
+            <div class="menu-item" onclick="showPage('applyPage', this)">
+              <span>Application Trainer</span>
+            </div>
+          </div>
+
+          <div class="sidebar-footer">
+
+            <div class="level-progress">
+
+              <div class="level-title">
+                Level <span id="userLevel">1</span>
+                <span id="levelStars">⭐</span>
+              </div>
+
+              <div class="progress-label">Progress</div>
+
+              <div class="progress-bar">
+                <span class="progress-left" id="progressDone">8</span>
+                <div class="progress-fill" id="progressFill"></div>
+                <span class="progress-right" id="progressRemaining">72</span>
+              </div>
+
+              <div class="progress-stats">
+                <div>✔️ ︎Mastered <span id="masteredWords">8</span>/<span id="targetWords">80</span></div>
+                <div>🏆 Total Mastered: <span id="totalMasteredWords">8</span></div>
+              </div>
+
+            </div>
+            <div class="sidebar-user-card">
+
+              <div class="logged-user">
+                <span class="user-avatar">👨‍💼</span>
+                <span id="sidebarUserName">User</span>
+              </div>
+
+              <div class="sidebar-divider"></div>
+
+              <div class="profile-btn sidebar-action" onclick="openProfileModal()">
+                <i id="pDashboardIcon" class="fa fa-bar-chart"> </i>
+                <span class="action-text">Profile Dashboard</span>
+                <span class="action-arrow">›</span>
+              </div>
+
+              <div class="logout-btn sidebar-action logout" onclick="confirmLogout()">
+                <span class="action-icon">[➜</span>
+                <span class="action-text">Logout</span>
+                <span class="action-arrow">›</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="collapsed-sidebar-tools">
+
+
+        <div class="tool-icon tooltip-wrapper" id="onStripDarkToggle" onclick="toggleAndSyncDarkMode()">
+          <span id="modeIcon" class="mode-icon">🌙︎</span>
+          <span class="tooltip-text">Toggle Mode</span>
+        </div>
+
+        <div class="tool-icon streak tooltip-wrapper">
+          <span class="fire">🔥︎</span>
+          <span class="streak-number" id="CurrentStreak">5</span>
+          <span class="tooltip-text">My Streak</span>
+        </div>
+
+        <div class="tool-icon tooltip-wrapper" onclick="takeFullScreenshot()">
+          <i class="fa fa-camera"></i>
+          <span class="tooltip-text">Screenshot</span>
+        </div>
+
+        <div class="tool-icon tooltip-wrapper" onclick="openProfileModal()">
+          <i class="fa fa-bar-chart"> </i>
+          <span class="tooltip-text">Profile Dashboard</span>
+        </div>
+
+        <div class="tool-icon tooltip-wrapper" id="SettingsBtn">
+          <i class="fa fa-cog"></i>
+          <span class="tooltip-text">Settings</span>
+        </div>
+
+        <div class="tool-icon tooltip-wrapper" onclick="confirmLogout()">
+          [➜
+          <span class="tooltip-text">Logout</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="mainContent" class="main-content">
+      <!-- LEARN PAGE -->
+      <div id="learnPage" class="page active-page">
+        <div class="main-container">
+          <div class="w3-bar w3-light-grey">
+            <div id="question" class="w3-bar-item"></div>
+          </div>
+          <div class="question-layout">
+            <div class="left-section">
+              <div class="options-card">
+                <form id="form">
+                  &nbsp;<label id="div-1" class="div">
+                    <input type="radio" id="1" name="this" value="" onclick="validate()">
+                    <span id="lab-1">A</span>
+                  </label>
+
+                  &nbsp;<label id="div-2" class="div">
+                    <input type="radio" id="2" name="this" value="" onclick="validate()">
+                    <span id="lab-2">B</span>
+                  </label>
+
+                  &nbsp;<label id="div-3" class="div">
+                    <input type="radio" id="3" name="this" value="" onclick="validate()">
+                    <span id="lab-3">C</span>
+                  </label>
+
+                  &nbsp;<label id="div-4" class="div">
+                    <input type="radio" id="4" name="this" value="" onclick="validate()">
+                    <span id="lab-4">D</span>
+                  </label>
+
+                  &nbsp;<label id="div-5" class="div">
+                    <input type="radio" id="5" name="this" value="" onclick="validate()">
+                    <span id="lab-5">None Of these</span>
+                  </label>
+                </form>
+              </div>
+            </div>
+            <div class="right-section">
+              <div id="image_container" class="image-hidden">
+                <img id="image_box" src="" />
+                <div id="imageFallback" class="image-fallback">
+                  📷 Image not available
+                </div>
+              </div>
+              <div id="example_container" class="example-box">
+                <div id="examplesBoxHeader">
+                  <h4>Usage Examples</h4>
+                </div>
+                <div id="examplesBody">
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="question-controls">
+
+            <div class="control-group">
+              <input type="checkbox" id="tatic" checked>
+              <label for="tatic">Do not Repeat Words</label>
+            </div>
+
+            <div class="control-group">
+              <input type="radio" id="all" name="category" checked>
+              <label for="all">All</label>
+            </div>
+
+            <div class="control-group">
+              <input type="radio" id="revise" name="category">
+              <label for="revise">Revise</label>
+            </div>
+
+            <div class="control-group">
+              <input type="radio" id="phrasal" name="category">
+              <label for="phrasal">Idioms & Phrasal Verbs</label>
+            </div>
+
+          </div>
+
+          <div class="buttons">
+            <div class="action-buttons">
+              <button id="next" class="button" onclick="changeQuestion()" disabled>NEXT</button>
+              <button id="skip" class="button" onclick="skipTheQuestion()">SKIP</button>
+            </div>
+            <div class="utility-buttons">
+              <button id="refreshBtn" class="icon-btn" onclick="loadImage()">
+                <i class="fa fa-refresh"></i>
+              </button>
+              <button id="reportBtn" class="icon-btn report-icon" onclick="openReportModal()">📊︎</button>
+            </div>
+          </div>
+
+          </br>
+          </br>
+
+          <br>
+          <div id="correction_container" class="panel" style="display: block;">
+            <div class="revision-section">
+              <div class="word-list-header">
+                <h3>Revision Table 📅︎</h3>
+
+                <div class="word-list-actions">
+                  <button onclick="copyRevisionList(document.getElementById('RevisionList'));">Copy</button>
+                  <button onclick="clearRevisionList()">Erase Data</button>
+                  <button onclick="showAndHide()">Show / Hide</button>
+                </div>
+              </div>
+              <div id="wordTableWrapper" class="open">
+                <table id="RevisionList">
+                  <thead>
+                    <tr>
+                      <th>Word</th>
+                      <th>Meaning</th>
+                    </tr>
+                  </thead>
+                  <tbody id="RevisionListBody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- INNER MASTERED CARD -->
+            <div class="mastered-subcard">
+              <div class="mastered-header">
+                🏆 Mastered Words
+              </div>
+              <div id="masteredWordsContainer"></div>
+            </div>
+          </div>
+          <button id="stopConfetti" hidden>Stop</button>
+          <button id="restartConfetti" hidden>Restart</button>
+        </div>
+      </div> <!-- END learnPage -->
+
+      <!-- APPLY PAGE -->
+      <div id="applyPage" class="page" style="display:none;">
+        <div class="main-container">
+          <!-- SESSION START SCREEN -->
+          <div id="applyStartScreen" class="apply-start-screen">
+            <div class="apply-start-card">
+              <h2>✍ Application Trainer</h2>
+              <p>
+                You will be given 5 words per question.
+                Use them accurately in context to strengthen your vocabulary mastery.
+              </p>
+              <button class="start-session-btn" onclick="startApplySession()">
+                Start Session
+              </button>
+            </div>
+          </div>
+
+          <!-- SESSION CONTENT (HIDDEN INITIALLY) -->
+          <div id="applySessionContent" class="hidden">
+            <!-- QUESTION BAR -->
+            <div class="w3-bar w3-light-grey">
+              <div class="apply-question-bar">
+                <span id="applyQuestionText">
+                  R O U N D
+                </span>
+                <span id="applyQuestionNumber"> 1</span>
+              </div>
+            </div>
+
+            <!-- WORD BUBBLES -->
+            <div class="apply-bubble-wrapper" id="applyBubbleWrapper">
+              <div class="apply-word-bubbles" id="applyWordContainer"></div>
+            </div>
+
+            <!-- INTERACTION CARD -->
+            <div class="apply-interaction-card" id="applyInteractionCard">
+              <div id="answerView" class="smooth-panel">
+                <div class="answer-wrapper">
+                  <textarea id="applyAnswer" class="apply-textarea"
+                    placeholder="Write a meaningful paragraph or one sentence per word, using the vocabulary words mentioned above. Focus on grammatical accuracy and natural contextual usage."></textarea>
+                  <div id="aiProcessingOverlay" class="ai-overlay hidden">
+                    <div class="ai-message">
+                      AI is analysing your answer, please wait...
+                    </div>
+                    <div class="thinking-dots">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="feedbackView" class="smooth-panel hidden">
+                <div class="feedback-header">
+                  AI Evaluation Report
+                </div>
+                <div class="answer-title">Your Answer:</div>
+                <div id="finalAnswer" class="answer-display"></div>
+                <div class="ai-answer-title">✨AI Generated Answer:</div>
+                <div id="aiSuggestion" class="answer-display ai-analysis">
+                  AI feedback will appear here.
+                </div>
+                <div class="feedback-overall">
+                  <div class="feedback-metric">
+                    <span>Overall</span>
+                    <strong id="overallAccuracy">--%</strong>
+                  </div>
+                  <div class="feedback-metric">
+                    <span>Grammar</span>
+                    <strong id="grammarAccuracy">--%</strong>
+                  </div>
+                  <div class="feedback-metric">
+                    <span>Context</span>
+                    <strong id="contextAccuracy">--%</strong>
+                  </div>
+                </div>
+              </div>
+              <button id="actionButton" class="apply-submit-btn fade-in" onclick="handleAction()">
+                Submit
+              </button>
+              <button id="endSessionBtn" class="apply-end-btn fade-in" onclick="endSession()">
+                Submit Session
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- END mainContent -->
+  </div> <!-- END app-layout -->
+
+  <!-- REPORT MODAL -->
+  <div id="reportModal" class="modal">
+    <div class="modal-content">
+
+      <div class="report-header">
+        <span class="report-title">
+          📊︎ Progress Report
+        </span>
+
+        <span class="close-btn" onclick="closeReportModal()">×</span>
+      </div>
+
+      <div class="progress-card">
+        <div class="report-body">
+
+          <!-- Donut Chart -->
+          <div class="chart-wrapper">
+            <canvas id="accuracyChart"></canvas>
+          </div>
+
+          <div class="accuracy-center">
+            <span>Accuracy:</span>
+            <span id="accuracyPercent">0%</span>
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-grid">
+
+            <div class="stat-card correct">
+              <div class="stat-value" id="correctCount">3</div>
+              <div class="stat-label">Correct</div>
+            </div>
+
+            <div class="stat-card wrong">
+              <div class="stat-value" id="wrongCount">1</div>
+              <div class="stat-label">Wrong</div>
+            </div>
+
+            <div class="stat-card skip">
+              <div class="stat-value" id="skipCount">4</div>
+              <div class="stat-label">Skipped</div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="tableTooltip" class="floating-tooltip"></div>
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loader"></div>
+  </div>
+  <!-- External libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Your project JS -->
+  <script src="js/app.js"></script>
+  <!-- PROFILE MODAL -->
+  <div id="profileModal" class="modal">
+
+    <div class="profile-modal-content">
+
+      <!-- HEADER -->
+      <div class="profile-modal-header">
+        <div class="profile-modal-title">
+          <h2>User Dashboard</h2>
+          <i class="fa fa-bar-chart" id="userDashboardIcon"></i>
+        </div>
+        <button class="profile-modal-close" onclick="closeProfileModal()">×</button>
+      </div>
+
+      <!-- SCROLLABLE BODY -->
+
+      <div class="profile-modal-body">
+        <!-- PROFILE CARD -->
+        <div class="profile-card">
+
+          <div class="profile-name">
+            <span id="profileUserName">User</span>
+            👨︎
+          </div>
+
+          <div class="profile-stats">
+
+            <div class="profile-stat">
+              <div class="stat-number" id="profileLevel">3</div>
+              <div class="stat-label">Level</div>
+            </div>
+
+            <div class="profile-stat">
+              <div class="stat-number" id="profileStreak">5</div>
+              <div class="stat-label">Day Streak 🔥</div>
+            </div>
+
+            <div class="profile-stat">
+              <div class="stat-number" id="profileMastered">84</div>
+              <div class="stat-label">Words Mastered</div>
+            </div>
+
+            <div class="profile-stat">
+              <div class="stat-number" id="profileSessions">38</div>
+              <div class="stat-label">Sessions</div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- INSIGHTS PANEL -->
+        <div class="insights-panel" id="insightsPanel">
+
+          <div class="insights-title">
+            <h3>Insights 💡︎</h3>
+          </div>
+          <div class="insights-body">
+            <ul id="insightsList">
+              <li>You mastered 12 words this week</li>
+              <li>Accuracy improved by 6%</li>
+              <li>You are strongest in Level 2 vocabulary</li>
+              <li>3 words need revision</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- GRAPH SECTION -->
+        <div class="graph-section">
+          <div class="graph-controls">
+            <div class="graph-section-title">
+              <h3>Progress Graph 📈︎</h3>
+            </div>
+            <div class="axis-control-set">
+              <div class="axis-control">
+                <label for="graphType">Y-Graph Type</label>
+                <select id="graphType">
+                  <option value="accuracy">Accuracy</option>
+                  <option value="mastery" selected>Words Mastered</option>
+                </select>
+                Max <input id="yMax" type="number" min="1" max="1000" value="1000">
+                Intervals <input id="yInterval" type="number" min="1" max="200" value="50">
+              </div>
+
+              <div class="axis-control">
+                <label for="timelineType">X-Timeline</label>
+                <select id="timelineType">
+                  <option value="sessions" selected>Sessions</option>
+                  <option value="date">Date</option>
+                </select>
+                Max <input id="xMax" type="number" min="1" max="100" value="100">
+                Intervals <input id="xInterval" type="number" min="1" max="25" value="5">
+              </div>
+            </div>
+          </div>
+          <canvas id="progressChart" height="260"></canvas>
+        </div>
+
+        <!-- WORD REVIEW TABLE -->
+        <div class="profile-table">
+
+          <div class="table-header">
+            <h3>Word Performance Table 📅︎</h3>
+
+            <input type="text" onkeyup="searchWordTable()" placeholder="Search word..." id="wordSearchInput">
+          </div>
+          <div id="noOfRowsPerPage">
+            <label id="rowPerPageLabel" for="rowsPerPageSelect">Rows per page:</label>
+            <select id="rowsPerPageSelect">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+          <div id="wordPerformanceContainer">
+            <table id="wordTable">
+              <thead>
+                <tr>
+                  <th onclick="sortWordTable('sno')">
+                    Sno <span class="sort-arrow" id="arrow-sno">↕</span>
+                  </th>
+
+                  <th onclick="sortWordTable('word')">
+                    Word <span class="sort-arrow" id="arrow-word">↕</span>
+                  </th>
+
+                  <th onclick="sortWordTable('level')">
+                    Level <span class="sort-arrow" id="arrow-level">↕</span>
+                  </th>
+
+                  <th onclick="sortWordTable('accuracy')">
+                    Accuracy <span class="sort-arrow" id="arrow-accuracy">↕</span>
+                  </th>
+
+                  <th onclick="sortWordTable('used')">
+                    Used <span class="sort-arrow" id="arrow-used">↕</span>
+                  </th>
+
+                  <th onclick="sortWordTable('streak')">
+                    Streak <span class="sort-arrow" id="arrow-streak">↕</span>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody id="wordTableBody">
+
+              </tbody>
+
+            </table>
+          </div>
+          <div id="wordPagination"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</body>
+
+</html>

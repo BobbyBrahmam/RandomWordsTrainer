@@ -1,0 +1,4283 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="icon" href="favicon.png">
+</head>
+
+<body>
+  <!-- LOGIN PAGE -->
+  <div id="authContainer" class="auth-container">
+    <div class="auth-card">
+      <h2 class="auth-title">Welcome to Eloquent</h2>
+
+      <!-- INITIAL BUTTONS -->
+      <div id="authOptions">
+        <button class="auth-btn" onclick="showLogin()">Login</button>
+        <button class="auth-btn secondary" onclick="showSignup()">Signup</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <div id="loginForm" class="auth-form hidden">
+        <input type="text" id="loginUser" placeholder="Username or Email">
+        <div class="password-wrapper">
+          <input type="password" id="loginPass" placeholder="Password">
+          <span class="toggle-eye" onclick="togglePassword('loginPass', this)">👁</span>
+        </div>
+        <button class="auth-submit" onclick="loginUser()">Login</button>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <div id="signupForm" class="auth-form hidden">
+        <input type="text" id="signupUser" placeholder="Username">
+        <input type="email" id="signupEmail" placeholder="Email">
+        <div class="password-wrapper">
+          <input type="password" id="signupPass" placeholder="Password">
+          <span class="toggle-eye" onclick="togglePassword('signupPass', this)">👁</span>
+        </div>
+        <button class="auth-submit" onclick="signupUser()">Signup</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <div id="sidebar" class="sidebar collapsed">
+      <div class="sidebar-header">
+        <div class="brand-row">
+          <div class="brand">Eloquent</div>
+
+          <div class="sidebar-controls">
+            <button id="darkToggle" class="dark-toggle-btn">🌙</button>
+            <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="menu-item active" onclick="showPage('learnPage', this)">
+          <span>Random Word Trainer</span>
+        </div>
+        <div class="menu-item" onclick="showPage('applyPage', this)">
+          <span>Application Trainer</span>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <div class="logged-user">
+          👤 <span id="sidebarUserName">User</span>
+        </div>
+        <div class="logout-btn" onclick="logoutUser()">
+          🚪 Logout
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="mainContent" class="main-content">
+
+      <!-- LEARN PAGE -->
+      <div id="learnPage" class="page active-page">
+
+        <div class="main-container">
+
+          <div class="w3-bar w3-light-grey">
+            <div id="question" class="w3-bar-item"></div>
+          </div>
+          <div class="question-layout">
+            <div class="left-section">
+              <div class="options-card">
+                <form id="form">
+                  &nbsp;<label id="div-1" class="div">
+                    <input type="radio" id="1" name="this" value="" onclick="validate()">
+                    <span id="lab-1">A</span>
+                  </label>
+
+                  &nbsp;<label id="div-2" class="div">
+                    <input type="radio" id="2" name="this" value="" onclick="validate()">
+                    <span id="lab-2">B</span>
+                  </label>
+
+                  &nbsp;<label id="div-3" class="div">
+                    <input type="radio" id="3" name="this" value="" onclick="validate()">
+                    <span id="lab-3">C</span>
+                  </label>
+
+                  &nbsp;<label id="div-4" class="div">
+                    <input type="radio" id="4" name="this" value="" onclick="validate()">
+                    <span id="lab-4">D</span>
+                  </label>
+
+                  &nbsp;<label id="div-5" class="div">
+                    <input type="radio" id="5" name="this" value="" onclick="validate()">
+                    <span id="lab-5">None Of these</span>
+                  </label>
+                </form>
+              </div>
+            </div>
+            <div class="right-section">
+              <div id="image_container" class="image-hidden">
+                <img id="image_box" src="" />
+                <div id="imageFallback" class="image-fallback">
+                  📷 Image not available
+                </div>
+              </div>
+              <div id="example_container" class="example-box"></div>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <div class="action-buttons">
+              <button id="next" class="button" onclick="changeQuestion()" disabled>NEXT</button>
+              <button id="skip" class="button" onclick="skipTheQuestion()">SKIP</button>
+            </div>
+            <div class="utility-buttons">
+              <button id="refreshBtn" class="icon-btn" onclick="loadImage()">
+                <i class="fa fa-refresh"></i>
+              </button>
+              <button id="reportBtn" class="icon-btn report-icon" onclick="openReportModal()">
+                <i class="fa fa-bar-chart"></i>
+              </button>
+            </div>
+          </div>
+
+          </br>
+          </br>
+          <input type="checkbox" id="tatic" checked>
+          <label for="tatic">Do not Repeat Words</label>
+
+          &nbsp; &nbsp;
+          <input type="radio" id="all" name="category" checked>
+          <label for="all">All</label>
+
+          &nbsp; &nbsp;
+          <input type="radio" id="revise" name="category">
+          <label for="revise">Revise</label>
+
+          &nbsp; &nbsp;
+          <input type="radio" id="phrasal" name="category">
+          <label for="phrasal">Idioms & Phrasal Verbs</label>
+
+          <br>
+          <div id="correction_container" class="panel" style="display: block;">
+            <div class="revision-section">
+              <div class="word-list-header">
+                <h3>📘 Needs Revision</h3>
+
+                <div class="word-list-actions">
+                  <button onclick="copyRevisionList(document.getElementById('RevisionList'));">Copy</button>
+                  <button onclick="clearRevisionList()">Erase Data</button>
+                  <button onclick="showAndHide()">Show / Hide</button>
+                </div>
+              </div>
+              <div id="wordTableWrapper" class="open">
+                <table id="RevisionList">
+                  <tr>
+                    <th>Word</th>
+                    <th>Meaning</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- INNER MASTERED CARD -->
+            <div class="mastered-subcard">
+              <div class="mastered-header">
+                🏆 Mastered Words
+              </div>
+              <div id="masteredWordsContainer"></div>
+            </div>
+          </div>
+          <button id="stopConfetti" hidden>Stop</button>
+          <button id="restartConfetti" hidden>Restart</button>
+
+          <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"> </script> -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+          <script type="text/javascript">
+            var hide = false;
+            $(document).ready(function () {
+              $("#flip_correction").click(function () {
+                if (hide == false) {
+                  $("#correction_container").hide();
+                  hide = true;
+                }
+                else {
+                  $("#correction_container").show();
+                  hide = false;
+                }
+              });
+            });
+
+            var response, correct_meaning, correct_word, no_of_words, random_id, word, chart;
+            var uniqueRandoms = [];
+            let DOM = {};
+            var correct = 0, wrong = 0, skipped = 0, count = 0;
+            var attempt = false;
+            let applyQuestionCount = 1;
+            let attemptedQuestions = 0;
+            let sessionWordsData = [];
+            let currentApplyWords = [];
+            let DEV_MODE = true;
+            let sessionWordPool = [];
+            let currentRoundIndex = 0;
+            const ROUNDS_PER_SESSION = 5;
+            let lastEvaluationResult = null;
+            let uniqueSessionWords = new Set();
+
+            function loadDoc() {
+              const q = DOM.question;
+              q.style.width = (150 + Math.random() * 150) + "px";
+              var url;
+              if (document.getElementById("revise").checked == true) {
+                uniqueRandoms = [];
+                word_array = [];
+                url = "https://script.google.com/macros/s/AKfycbz-Z6AlQaclHeRrsJp5rbT48sfNfwUxkieXdB2qhq-VFYpsXQS_rKc0fX8VMHYgvM-B6Q/exec";
+              }
+
+              else if (document.getElementById("phrasal").checked == true) {
+                uniqueRandoms = [];
+                word_array = [];
+                url = "https://script.google.com/macros/s/AKfycbw-ebR8jV7pq6E9JYKBiz0xgd26HRsE0nowg8w_kikqjKJj-Mz0fYP5QlpFX-zIgmba0g/exec";
+              }
+
+              else if (document.getElementById("all").checked == true) {
+                url = "https://script.google.com/macros/s/AKfycbwlMX0gigidxkW1i36N6aoXPHgRgYlHdGd2kB2X03wvF0TJk5qllory9_rEk5UWCtqPug/exec";
+              }
+
+              correct = 0, wrong = 0, skipped = 0, count = 0;
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                  response = JSON.parse(this.responseText);
+                  no_of_words = Object.keys(response.user).length;
+                  refillAll();
+                  changeQuestion();
+                  enterApp();
+                  showPage("learnPage");
+                  hideLoader();   // 🔥 hide after real data loads
+                }
+              };
+              xhttp.open("GET", url, true);
+              xhttp.send();
+            }
+
+            const RevisitAll = document.getElementById('all'); //All
+            const RevisitImp = document.getElementById('revise'); //IdiomsNPVerbs
+            const RevisePhrasal = document.getElementById('phrasal');
+
+            document.querySelectorAll('input[name="category"]')
+              .forEach(el => el.addEventListener('change', loadDoc))
+
+            function refillAll() {
+              for (var i = 0; i < no_of_words; i++) {
+                uniqueRandoms.push(i);
+              }
+            }
+
+            function speakWord() {
+              const utterance = new SpeechSynthesisUtterance(word);
+              utterance.lang = "en-US";
+              speechSynthesis.speak(utterance);
+            }
+
+            function fetchExamples(word) {
+              var exampleBox = DOM.exampleContainer;
+              let ex1 = response.user[random_id].example1;
+              let ex2 = response.user[random_id].example2;
+              let ex3 = response.user[random_id].example3;
+              let ex4 = response.user[random_id].example4;
+              let output = "<h4>Usage Examples:</h4>";
+              if (ex1) output += `<p>• ${ex1}</p>`;
+              if (ex2) output += `<p>• ${ex2}</p>`;
+              if (ex3) output += `<p>• ${ex3}</p>`;
+              if (ex4) output += `<p>• ${ex4}</p>`;
+              exampleBox.innerHTML = output;
+              exampleBox.style.display = "block";
+            }
+
+            function changeQuestion() {
+              const container = DOM.imageContainer;
+              const img = DOM.imageBox;
+              const fallback = DOM.imageFallback;
+              container.classList.remove("visible");
+              img.style.display = "none";
+              fallback.style.display = "none";
+              DOM.exampleContainer.style.display = "none";
+              count++;
+              resetFormat();
+              let word_array = [];
+              for (let i = 0; i < response.user.length; i++) {
+                word_array.push(i);
+              }
+              let id_of_random_word;
+              if (document.getElementById("tatic").checked) {
+                if (uniqueRandoms.length < 1) {
+                  refillAll();
+                }
+                id_of_random_word = Math.floor(Math.random() * uniqueRandoms.length);
+                random_id = uniqueRandoms[id_of_random_word];
+                uniqueRandoms.splice(id_of_random_word, 1);
+              } else {
+                random_id = Math.floor(Math.random() * no_of_words);
+              }
+
+              word = response.user[random_id].word.trim();
+              correct_meaning = response.user[random_id].meaning;
+
+              DOM.question.innerHTML =
+                "<span class='question-number'>" + count + ". </span>" +
+                "<span class='question-word'>" + word + "</span>" +
+                "<button class='question-audio' onclick='speakWord()'>" +
+                "<i class='fa fa-volume-up'></i></button>";
+
+              // remove correct word index from pool
+              word_array.splice(word_array.indexOf(random_id), 1);
+
+              // shuffle answer positions
+              let positions = [1, 2, 3, 4];
+              let correctPosition = positions.splice(Math.floor(Math.random() * positions.length), 1)[0];
+
+              correct_word = correctPosition;
+
+              document.getElementById(correctPosition).value = correct_meaning;
+              document.getElementById("lab-" + correctPosition).innerHTML = correct_meaning;
+
+              // select 3 random wrong meanings
+              let wrongIndexes = [];
+
+              for (let i = 0; i < 3; i++) {
+                let r = Math.floor(Math.random() * word_array.length);
+                wrongIndexes.push(word_array[r]);
+                word_array.splice(r, 1);
+              }
+
+              wrongIndexes.forEach((index, i) => {
+                let place = positions.splice(Math.floor(Math.random() * positions.length), 1)[0];
+                let meaning = response.user[index].meaning;
+                document.getElementById(place).value = meaning;
+                document.getElementById("lab-" + place).innerHTML = meaning;
+
+              });
+
+              updateReport();
+
+              DOM.nextBtn.style.backgroundColor = "#cccccc";
+              DOM.nextBtn.disabled = true;
+              DOM.skipBtn.disabled = false;
+            }
+
+
+            function disableOptions() {
+              for (let i = 1; i <= 5; i++) {
+                document.getElementById(i).disabled = true;
+              }
+            }
+
+            function resetFormat() {
+              for (let i = 1; i <= 5; i++) {
+                document.getElementById(i).disabled = false;
+                document.getElementById("div-" + i).classList.remove("correct", "wrong", "answered");
+                document.getElementById(i).checked = false;
+              }
+            }
+
+            function loadImage() {
+              const btn = DOM.refreshBtn;
+              const container = DOM.imageContainer;
+              const img = DOM.imageBox;
+              const fallback = DOM.imageFallback;
+
+              btn.classList.add("spin");
+              setTimeout(() => btn.classList.remove("spin"), 600);
+
+              const imageUrl = response.user[random_id].image;
+
+              container.classList.add("visible");
+              container.classList.add("loading");
+
+              img.classList.remove("loaded");
+              img.style.display = "none";
+              fallback.style.display = "none";
+
+              if (!imageUrl || imageUrl.trim() === "") {
+                container.classList.remove("loading");
+                fallback.style.display = "block";
+                return;
+              }
+
+              let hasResolved = false;
+
+              img.onload = function () {
+                if (hasResolved) return;
+                hasResolved = true;
+
+                container.classList.remove("loading");
+                fallback.style.display = "none";
+                img.style.display = "block";
+                img.classList.add("loaded");
+              };
+
+              img.onerror = function () {
+                if (hasResolved) return;
+                hasResolved = true;
+
+                container.classList.remove("loading");
+                img.style.display = "none";
+                fallback.style.display = "block";
+              };
+
+              img.src = imageUrl;
+            }
+
+            function validate() {
+              loadImage();
+
+              attempt = true;
+
+              var selected_value, selected_id;
+
+              const selected = document.querySelector('input[name="this"]:checked');
+              if (!selected) {
+                alert("Please select an answer.");
+                return;
+              }
+              selected_id = selected?.id;
+              selected_value = selected?.value;
+
+              disableOptions();
+
+              for (let i = 1; i <= 5; i++) {
+                document.getElementById("div-" + i).classList.add("answered");
+              }
+
+              if (selected_value == correct_meaning) {
+                correct++;
+                document.getElementById("div-" + selected_id).classList.add("correct");
+                addWordToList(word, correct_meaning);
+
+                document.getElementById("restartConfetti").click();
+                setTimeout(function () {
+                  document.getElementById("stopConfetti").click();
+                }, 2000);
+              }
+
+              else if (selected_value !== correct_meaning) {
+                wrong++;
+                document.getElementById("div-" + selected_id).classList.add("wrong");
+                document.getElementById("div-" + correct_word).classList.add("correct");
+
+                addToRevisionList(word, correct_meaning);
+              }
+              DOM.nextBtn.style.backgroundColor = "#006400";
+              DOM.nextBtn.disabled = false;
+              DOM.skipBtn.disabled = true;
+
+              fetchExamples(word);
+
+              updateReport();
+            }
+
+            function addToRevisionList(word, meaning) {
+              var table = DOM.revisionTable;
+              var row = table.insertRow(table.rows.length);
+
+              var cell1 = row.insertCell(0);
+              var cell2 = row.insertCell(1);
+
+              cell1.innerHTML = word;
+              cell2.innerHTML = meaning;
+
+              // Collect examples
+              let ex1 = response.user[random_id].example1 || "";
+              let ex2 = response.user[random_id].example2 || "";
+              let ex3 = response.user[random_id].example3 || "";
+              let ex4 = response.user[random_id].example4 || "";
+
+              let examplesArray = [ex1, ex2, ex3, ex4]
+                .filter(e => e !== "")
+                .map(e => `<div class="tooltip-line">• ${e}</div>`);
+
+              let examples = "";
+
+              if (examplesArray.length > 0) {
+                examples =
+                  "<div class='tooltip-title'>Examples:</div>" +
+                  "<div class='tooltip-lines'>" +
+                  examplesArray.join("") +
+                  "</div>";
+              }
+
+              if (examples !== "") {
+                row.setAttribute("data-examples", examples);
+              }
+            }
+
+            function addWordToList(Word, Meaning) {
+              var pill = document.createElement("span");
+              pill.className = "word-pill";
+              pill.textContent = Word;
+
+              // 🔊 Add pronunciation on click
+              pill.addEventListener("click", function (e) {
+                e.stopPropagation(); // prevent tooltip conflicts
+                const utterance = new SpeechSynthesisUtterance(Word);
+                utterance.lang = "en-US";
+                utterance.rate = 0.9;
+                utterance.pitch = 1;
+                speechSynthesis.cancel(); // stop any previous speech
+                speechSynthesis.speak(utterance);
+              });
+
+              var tooltip = document.createElement("span");
+              tooltip.className = "tooltiptext";
+
+              // Collect examples
+              let ex1 = response.user[random_id].example1 || "";
+              let ex2 = response.user[random_id].example2 || "";
+              let ex3 = response.user[random_id].example3 || "";
+              let ex4 = response.user[random_id].example4 || "";
+
+              let examples = [ex1, ex2, ex3, ex4]
+                .filter(e => e)
+                .map(e => `<p>• ${e}</p>`)
+                .join("");
+
+              tooltip.innerHTML = `
+              <div class="tooltip-title">${Word}</div>
+              <div class="tooltip-meaning">${Meaning}</div>
+              <div class="tooltip-divider"></div>
+              <div class="tooltip-examples">
+              ${examples}
+               </div>
+              `;
+
+              pill.appendChild(tooltip);
+
+              DOM.masteredContainer.appendChild(pill);
+            }
+
+            function showExamplesForWord(word) {
+              let wordData = response.user.find(w => w.word === word);
+              let examples = [wordData.example1, wordData.example2, wordData.example3, wordData.example4]
+                .filter(e => e);
+              alert("Examples:\n\n" + examples.join("\n\n"));
+            }
+
+
+            function copyRevisionList(el) {
+              var body = document.body, range, sel;
+              if (document.createRange && window.getSelection) {
+                range = document.createRange();
+                sel = window.getSelection();
+                sel.removeAllRanges();
+                try {
+                  range.selectNodeContents(el);
+                  sel.addRange(range);
+                } catch (e) {
+                  range.selectNode(el);
+                  sel.addRange(range);
+                }
+                document.execCommand("copy");
+
+              } else if (body.createTextRange) {
+                range = body.createTextRange();
+                range.moveToElementText(el);
+                range.select();
+                range.execCommand("Copy");
+              }
+            }
+
+            function clearRevisionList() {
+              var table = DOM.revisionTable;
+              try {
+                while (table.rows.length > 0) {
+                  table.deleteRow(1);
+                }
+              }
+              catch (err) {
+              }
+            }
+
+
+            function skipTheQuestion() {
+              skipped++;
+              addToRevisionList(word, correct_meaning);
+              changeQuestion();
+            }
+
+            // Draw the chart and set the chart values
+            function updateReport() {
+
+              // 🔥 Update individual numbers first
+              DOM.correctCount.innerText = correct;
+              DOM.wrongCount.innerText = wrong;
+              DOM.skipCount.innerText = skipped;
+
+              const total = correct + wrong + skipped;
+              let accuracy = 0;
+
+              if (total > 0) {
+                accuracy = (correct / total) * 100;
+              }
+
+              accuracy = Math.min(100, Math.max(0, accuracy));
+
+              DOM.accuracyPercent.innerText =
+                Math.round(accuracy) + "%";
+
+              const radius = 75;
+              const circumference = 2 * Math.PI * radius;
+
+              const ring = DOM.progressRing;
+
+              ring.style.strokeDasharray = circumference;
+
+              let offset;
+
+              if (accuracy >= 100) {
+                offset = 0;
+              } else if (accuracy <= 0) {
+                offset = circumference;
+              } else {
+                offset = circumference - (accuracy / 100) * circumference;
+              }
+
+              ring.style.strokeDashoffset = offset;
+            }
+
+            function showAndHide() {
+              var wrapper = document.getElementById("wordTableWrapper");
+              wrapper.classList.toggle("open");
+            }
+
+            function toggleReport() {
+              const content = document.getElementById("reportContent");
+              const arrow = document.getElementById("reportArrow");
+              content.classList.toggle("open");
+
+              if (content.classList.contains("open")) {
+                arrow.innerHTML = "▼";
+              } else {
+                arrow.innerHTML = "▲";
+              }
+            }
+
+            function openReportModal() {
+              document.getElementById("reportModal").classList.add("active");
+              updateReport(); // make sure stats are updated
+            }
+
+            function closeReportModal() {
+              document.getElementById("reportModal").classList.remove("active");
+            }
+
+            const toggleBtn = document.getElementById("darkToggle");
+
+            toggleBtn.addEventListener("click", function () {
+              document.body.classList.toggle("dark-mode");
+              if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+                toggleBtn.innerHTML = "☀️";
+              } else {
+                localStorage.setItem("theme", "light");
+                toggleBtn.innerHTML = "🌙";
+              }
+            });
+
+            // On load
+            if (localStorage.getItem("theme") === "dark") {
+              document.body.classList.add("dark-mode");
+              toggleBtn.innerHTML = "☀️";
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+              DOM = {
+                question: document.getElementById("question"),
+                nextBtn: document.getElementById("next"),
+                skipBtn: document.getElementById("skip"),
+                imageContainer: document.getElementById("image_container"),
+                imageBox: document.getElementById("image_box"),
+                imageFallback: document.getElementById("imageFallback"),
+                exampleContainer: document.getElementById("example_container"),
+                refreshBtn: document.getElementById("refreshBtn"),
+                reportBtn: document.getElementById("reportBtn"),
+                revisionTable: document.getElementById("RevisionList"),
+                masteredContainer: document.getElementById("masteredWordsContainer"),
+                progressRing: document.getElementById("progressRing"),
+                correctCount: document.getElementById("correctCount"),
+                wrongCount: document.getElementById("wrongCount"),
+                skipCount: document.getElementById("skipCount"),
+                accuracyPercent: document.getElementById("accuracyPercent")
+              };
+
+              const textarea = document.getElementById("applyAnswer");
+
+              if (textarea) {
+                textarea.addEventListener("input", checkUsedWords);
+              }
+
+              const tooltip = document.getElementById("tableTooltip");
+              const table = DOM.revisionTable;
+
+              table.addEventListener("mouseover", function (e) {
+                const row = e.target.closest("tr");
+
+                if (row && row.dataset.examples) {
+                  tooltip.innerHTML = row.dataset.examples;
+                  tooltip.style.display = "block";
+                }
+              });
+
+              table.addEventListener("mousemove", function (e) {
+                if (tooltip.style.display === "block") {
+
+                  const offsetX = 15;
+                  const offsetY = 15;
+
+                  tooltip.style.left = (e.clientX + offsetX) + "px";
+                  tooltip.style.top = (e.clientY - tooltip.offsetHeight - offsetY) + "px";
+                }
+              });
+
+              table.addEventListener("mouseleave", function () {
+                tooltip.style.display = "none";
+              });
+
+              document.addEventListener("mouseover", function (e) {
+                const pill = e.target.closest(".word-pill");
+                if (!pill) return;
+
+                const tooltip = pill.querySelector(".tooltiptext");
+                if (!tooltip) return;
+
+                // Reset position first
+                tooltip.style.left = "50%";
+                tooltip.style.transform = "translateX(-50%)";
+
+                setTimeout(() => {
+                  const rect = tooltip.getBoundingClientRect();
+
+                  if (rect.right > window.innerWidth) {
+                    tooltip.style.left = "auto";
+                    tooltip.style.right = "0";
+                    tooltip.style.transform = "translateX(0)";
+                  }
+
+                  if (rect.left < 0) {
+                    tooltip.style.left = "0";
+                    tooltip.style.right = "auto";
+                    tooltip.style.transform = "translateX(0)";
+                  }
+                }, 10);
+              });
+
+
+              const loggedUser = localStorage.getItem("loggedInUser");
+              const lastActive = localStorage.getItem("lastActiveTime");
+              const loginDate = localStorage.getItem("loginDate");
+
+              const now = Date.now();
+              const today = new Date().toDateString();
+
+              let validSession = true;
+
+              // rule 1: new day → logout
+              if (loginDate !== today) {
+                validSession = false;
+              }
+
+              // rule 2: inactive > 10 min → logout
+              if (lastActive && (now - lastActive > 10 * 60 * 1000)) {
+                validSession = false;
+              }
+
+              if (loggedUser && validSession) {
+
+                showLoader();
+
+                document.getElementById("sidebarUserName").innerText = loggedUser;
+                document.getElementById("authContainer").style.display = "none";
+                document.querySelector(".app-layout").style.display = "flex";
+
+                loadDoc();
+
+              } else {
+
+                logoutUser(); // clear everything
+
+                document.getElementById("authContainer").style.display = "flex";
+                document.querySelector(".app-layout").style.display = "none";
+              }
+
+            });
+
+            function checkUsedWords() {
+              const textarea = document.getElementById("applyAnswer");
+              const cleanText = normalize(textarea.value);
+              const wordsInText = cleanText.split(/\s+/).map(w => stem(w));
+              const bubbles = document.querySelectorAll(".apply-bubble");
+              bubbles.forEach((bubble) => {
+                const word = bubble
+                  .querySelector(".apply-bubble-word")
+                  .innerText;
+                const bubbleStem = stem(normalize(word));
+                const prefix = bubbleStem.slice(0, Math.min(4, bubbleStem.length));
+                const match = wordsInText.some(w => w.startsWith(prefix));
+                if (match) {
+                  bubble.classList.add("completed");
+                } else {
+                  bubble.classList.remove("completed");
+                }
+              });
+            }
+
+            function updateActivity() {
+              localStorage.setItem("lastActiveTime", Date.now());
+            }
+
+            document.addEventListener("click", updateActivity);
+            document.addEventListener("keypress", updateActivity);
+            document.addEventListener("mousemove", updateActivity);
+
+            window.addEventListener("beforeunload", function (e) {
+              const loggedUser = localStorage.getItem("loggedInUser");
+              if (loggedUser && (attemptedQuestions > 0 || count > 1)) {
+                localStorage.setItem("lastActiveTime", Date.now());
+                e.preventDefault();
+                e.returnValue = "";
+                return "";
+              }
+            });
+
+            function toggleSidebar() {
+              const sidebar = document.getElementById("sidebar");
+              sidebar.classList.toggle("collapsed");
+            }
+
+            function showPage(pageId, element) {
+
+              document.body.classList.remove("learn-mode", "apply-mode");
+
+              if (pageId === "learnPage") {
+                document.body.classList.add("learn-mode");
+              }
+
+              if (pageId === "applyPage") {
+                document.body.classList.add("apply-mode");
+              }
+
+              if (!document.getElementById("loadingOverlay").classList.contains("hidden")) {
+                return; // block navigation during loading
+              }
+
+              document.querySelectorAll(".page").forEach(p => {
+                p.style.display = "none";
+              });
+
+              document.querySelectorAll(".menu-item").forEach(i => {
+                i.classList.remove("active");
+              });
+
+              document.getElementById(pageId).style.display = "block";
+
+              if (element) {
+                element.classList.add("active");
+              }
+              else {
+                // 🔥 If called programmatically (first load)
+                const autoMenu = document.querySelector(
+                  `.menu-item[onclick*="${pageId}"]`
+                );
+                if (autoMenu) autoMenu.classList.add("active");
+              }
+
+              if (pageId === "applyPage") {
+
+                applyQuestionCount = 1;
+                document.getElementById("applyQuestionNumber").innerText = "1";
+
+                //loadApplyWords();
+                loadRoundWords();
+
+                // Reset view
+                document.getElementById("feedbackView").classList.add("hidden");
+                document.getElementById("answerView").classList.remove("hidden");
+
+                document.getElementById("actionButton").innerText = "Submit";
+
+                submitted = false;
+              }
+            }
+
+            let submitted = false;
+
+            function handleAction() {
+              if (!submitted) {
+                submitAnswer();
+              } else {
+                loadNextQuestion();
+              }
+            }
+
+
+            function simulateFakeEvaluation(answer) {
+              const actionBtn = document.getElementById("actionButton");
+              // Simulate delay
+              setTimeout(() => {
+                const fakeResult = {
+                  words: {},
+                  grammar_accuracy: Math.floor(Math.random() * 20) + 75,
+                  overall_context_accuracy: Math.floor(Math.random() * 20) + 75,
+                  suggested_correction:
+                    "This is a mock evaluation. Structure is good but transitions can be refined."
+                };
+
+                currentApplyWords.forEach(word => {
+                  fakeResult.words[word] =
+                    Math.floor(Math.random() * 40) + 60;
+                });
+
+                // 🔥 Track attempted words (same as real evaluation)
+                currentApplyWords.forEach(word => {
+                  uniqueSessionWords.add(word);
+                });
+
+                lastEvaluationResult = fakeResult;
+
+                // Display results
+                const highlightedUserAnswer =
+                  highlightWordsInText(answer, currentApplyWords);
+
+                const textarea = document.getElementById("applyAnswer");
+                const overlay = document.getElementById("aiProcessingOverlay");
+
+                const actionBtn = document.getElementById("actionButton");
+                const endBtn = document.getElementById("endSessionBtn");
+
+                /* remove blur */
+
+                textarea.classList.remove("blur");
+
+                /* hide dots */
+
+                overlay.classList.add("hidden");
+
+                /* show buttons again */
+
+                if (currentRoundIndex !== ROUNDS_PER_SESSION - 1) {
+                  actionBtn.classList.remove("fade-out");
+                  actionBtn.classList.add("fade-in");
+                }
+
+                endBtn.classList.remove("fade-out");
+                endBtn.classList.add("fade-in");
+
+                document.getElementById("finalAnswer").innerHTML =
+                  highlightedUserAnswer;
+                document.getElementById("overallAccuracy").innerText =
+                  fakeResult.overall_context_accuracy + "%";
+                document.getElementById("grammarAccuracy").innerText =
+                  fakeResult.grammar_accuracy + "%";
+                document.getElementById("contextAccuracy").innerText =
+                  fakeResult.overall_context_accuracy + "%";
+                const highlightedSuggestion =
+                  highlightWordsInText(
+                    fakeResult.suggested_correction,
+                    currentApplyWords
+                  );
+
+                document.getElementById("aiSuggestion").innerHTML =
+                  highlightedSuggestion;
+
+                const answerView = document.getElementById("answerView");
+                const feedbackView = document.getElementById("feedbackView");
+
+                answerView.classList.add("hidden");
+                setTimeout(() => {
+                  feedbackView.classList.remove("hidden");
+                }, 200);
+                feedbackView.classList.remove("hidden");
+
+                if (currentRoundIndex === ROUNDS_PER_SESSION - 1) {
+
+                  actionBtn.style.display = "none";
+
+                  const endBtn = document.getElementById("endSessionBtn");
+
+                  endBtn.style.marginLeft = "0";
+                  endBtn.style.marginRight = "auto";
+
+                } else {
+                  actionBtn.style.display = "inline-block";  // restore if previously hidden
+                  actionBtn.innerText = "Next Question";
+                }
+                actionBtn.disabled = false;
+
+                submitted = true;
+                attemptedQuestions++;
+
+              }, 1500);
+            }
+
+            function levenshteinDistance(a, b) {
+              const matrix = [];
+
+              for (let i = 0; i <= b.length; i++) {
+                matrix[i] = [i];
+              }
+
+              for (let j = 0; j <= a.length; j++) {
+                matrix[0][j] = j;
+              }
+
+              for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                  if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                  } else {
+                    matrix[i][j] = Math.min(
+                      matrix[i - 1][j - 1] + 1,
+                      matrix[i][j - 1] + 1,
+                      matrix[i - 1][j] + 1
+                    );
+                  }
+                }
+              }
+
+              return matrix[b.length][a.length];
+            }
+
+            function normalize(text) {
+              return text
+                .toLowerCase()
+                .replace(/[-_]/g, " ")
+                .replace(/[^\w\s]/g, " ");
+            }
+
+            function normalizeWord(word) {
+              return word
+                .toLowerCase()
+                .replace(/[-_]/g, "")
+                .replace(/[^\w]/g, "");
+            }
+
+            function stem(word) {
+
+              word = word.toLowerCase();
+
+              // 🔥 Handle y → ied (pacified → pacify)
+              if (word.endsWith("ied") && word.length > 4) {
+                return word.slice(0, -3) + "y";
+              }
+
+              // 🔥 Handle ies → y (studies → study)
+              if (word.endsWith("ies") && word.length > 4) {
+                return word.slice(0, -3) + "y";
+              }
+
+              const suffixes = [
+                "ability", "ibility",
+                "ation", "ition",
+                "ment", "ness",
+                "ing", "edly",
+                "ed", "ly",
+                "es", "s"
+              ];
+
+              for (let suffix of suffixes) {
+                if (word.endsWith(suffix) && word.length > suffix.length + 2) {
+                  return word.slice(0, -suffix.length);
+                }
+              }
+
+              return word;
+            }
+
+            function similarity(a, b) {
+              a = a.toLowerCase();
+              b = b.toLowerCase();
+
+              if (a === b) return 1;
+
+              const lengthDiff = Math.abs(a.length - b.length);
+
+              // If length difference too large, no need to compare
+              if (lengthDiff > Math.max(a.length, b.length) * 0.5) {
+                return 0;
+              }
+
+              const distance = levenshteinDistance(a, b);
+              const maxLength = Math.max(a.length, b.length);
+
+              return 1 - distance / maxLength;
+            }
+
+            function highlightWordsInText(text, words) {
+              const tokens = text.split(/(\s+)/);
+              const highlighted = tokens.map(token => {
+                const cleanToken = normalizeWord(token);
+                if (cleanToken.length < 3) return token;
+                for (let word of words) {
+                  const cleanWord = normalizeWord(word);
+                  const prefix = cleanWord.slice(0, Math.min(4, cleanWord.length));
+                  if (cleanToken.startsWith(prefix)) {
+                    return wrap(token);
+                  }
+                }
+                return token;
+              });
+              return highlighted.join("");
+            }
+
+            function wrap(word) {
+              return `<span class="highlight-word">${word}</span>`;
+            }
+
+            function submitAnswer() {
+              updateVisibleWords(); // ensure correct round words
+
+              const answer = document.getElementById("applyAnswer").value.trim();
+              if (!answer) {
+                alert("Please write an answer before submitting.");
+                return;
+              }
+              const textarea = document.getElementById("applyAnswer");
+              const overlay = document.getElementById("aiProcessingOverlay");
+              const actionBtn = document.getElementById("actionButton");
+              const endBtn = document.getElementById("endSessionBtn");
+
+              /* start processing UI */
+
+              textarea.classList.add("blur");
+              overlay.classList.remove("hidden");
+
+              /* fade buttons out */
+
+              actionBtn.classList.remove("fade-in");
+              endBtn.classList.remove("fade-in");
+
+              actionBtn.classList.add("fade-out");
+              endBtn.classList.add("fade-out");
+
+              actionBtn.disabled = true;
+
+              /* DEV MODE */
+              if (DEV_MODE) {
+                simulateFakeEvaluation(answer);
+                return;
+              }
+
+              const userId = localStorage.getItem("loggedInUser");
+              const formattedWords = currentApplyWords.map(w => {
+                if (typeof w === "string") {
+                  return { word: w };
+                }
+                return w;
+              });
+
+              const requestData = {
+                action: "evaluateAnswer",
+                user_id: userId,
+                answer: answer,
+                words: formattedWords
+              };
+
+              fetch("https://script.google.com/macros/s/AKfycbxH_x9vvFDqcqcILRuc3_EHDAIf2L_RMWIi4bJOT-pbcL9_n8c6yy27GBEHtRImTtFi/exec", {
+                method: "POST",
+                body: JSON.stringify(requestData)
+              })
+                .then(res => res.text())
+                .then(text => {
+
+                  console.log("Raw response:", text);
+
+                  /* STOP PROCESSING UI */
+
+                  textarea.classList.remove("blur");
+                  overlay.classList.add("hidden");
+
+                  actionBtn.classList.remove("fade-out");
+                  endBtn.classList.remove("fade-out");
+
+                  actionBtn.classList.add("fade-in");
+                  endBtn.classList.add("fade-in");
+
+                  let data;
+
+                  try {
+                    data = JSON.parse(text);
+                  } catch (err) {
+                    alert("Server returned invalid response.");
+                    return;
+                  }
+
+                  const ai = data.result || data;
+
+                  // track attempted words ONLY after submission
+                  currentApplyWords.forEach(word => {
+                    uniqueSessionWords.add(word);
+                  });
+
+                  lastEvaluationResult = ai;
+
+                  const highlightedUserAnswer =
+                    highlightWordsInText(answer, currentApplyWords);
+
+                  document.getElementById("finalAnswer").innerHTML =
+                    highlightedUserAnswer;
+
+                  document.getElementById("overallAccuracy").innerText =
+                    ai.overall_context_accuracy + "%";
+
+                  document.getElementById("grammarAccuracy").innerText =
+                    ai.grammar_accuracy + "%";
+
+                  document.getElementById("contextAccuracy").innerText =
+                    ai.overall_context_accuracy + "%";
+
+                  const highlightedSuggestion =
+                    highlightWordsInText(ai.suggested_correction, currentApplyWords);
+
+                  document.getElementById("aiSuggestion").innerHTML =
+                    highlightedSuggestion;
+
+
+                  const answerView = document.getElementById("answerView");
+                  const feedbackView = document.getElementById("feedbackView");
+
+                  answerView.classList.add("hidden");
+
+                  setTimeout(() => {
+                    feedbackView.classList.remove("hidden");
+                  }, 200);
+
+                  if (currentRoundIndex === ROUNDS_PER_SESSION - 1) {
+
+                    actionBtn.style.display = "none";
+
+                    endBtn.style.marginLeft = "0";
+                    endBtn.style.marginRight = "auto";
+
+                  } else {
+
+                    actionBtn.style.display = "inline-block";
+                    actionBtn.innerText = "Next Question";
+
+                  }
+
+                  actionBtn.disabled = false;
+                  submitted = true;
+                  attemptedQuestions++;
+
+                })
+
+                .catch(err => {
+
+                  textarea.classList.remove("blur");
+                  overlay.classList.add("hidden");
+
+                  actionBtn.classList.remove("fade-out");
+                  endBtn.classList.remove("fade-out");
+
+                  actionBtn.innerText = "Submit";
+                  actionBtn.disabled = false;
+
+                  console.error(err);
+                  alert("Server error.");
+
+                });
+            }
+
+
+            function checkDailyLimit() {
+              const today = new Date().toDateString();
+              const stored = JSON.parse(
+                localStorage.getItem("dailyProgress")
+              ) || {};
+
+              if (stored.date !== today) {
+                localStorage.setItem("dailyProgress",
+                  JSON.stringify({
+                    date: today,
+                    rounds: 0
+                  })
+                );
+                return true;
+              }
+
+              if (stored.rounds >= 20) {
+                alert("Daily limit reached.");
+                return false;
+              }
+
+              return true;
+            }
+
+            function loadNextQuestion() {
+
+              document.querySelectorAll(".apply-bubble").forEach(b => b.classList.remove("completed"));
+
+              const container = document.getElementById("applyWordContainer");
+              const bubbles = container.querySelectorAll(".apply-bubble");
+
+              currentRoundIndex++;
+              const startIndex = currentRoundIndex * 3 + 2;
+
+              const startBubble = bubbles[startIndex];
+
+              const wrapper = document.querySelector(".apply-bubble-wrapper");
+
+              const wrapperCenter = wrapper.offsetWidth / 2;
+              const bubbleCenter = startBubble.offsetLeft + (startBubble.offsetWidth / 2);
+
+              const offset = bubbleCenter - wrapperCenter;
+
+              container.style.transition =
+                "transform 0.55s cubic-bezier(.4,0,.2,1)";
+
+              container.style.transform =
+                `translateX(-${offset}px)`;
+
+              if (currentRoundIndex === ROUNDS_PER_SESSION) {
+                alert("Session completed!");
+              }
+
+              updateVisibleWords();
+
+              document.getElementById("applyAnswer").value = "";
+              document.getElementById("feedbackView").classList.add("hidden");
+              document.getElementById("answerView").classList.remove("hidden");
+              document.getElementById("actionButton").innerText = "Submit";
+
+              submitted = false;
+            }
+
+
+            // We need 17 unique words for 5 rounds with 2 overlap logic
+            // Because:
+            // Round 1 = 5
+            // Each next round adds 3 new words
+            // Total = 5 + (4 × 3) = 17
+            function generateSessionWordPool() {
+              sessionWordPool = [];
+              currentRoundIndex = 0;
+              const usedIndexes = new Set();
+
+              while (usedIndexes.size < 17) {
+                const randomIndex =
+                  Math.floor(Math.random() * response.user.length);
+                usedIndexes.add(randomIndex);
+              }
+
+              usedIndexes.forEach(index => {
+                sessionWordPool.push(response.user[index]);
+              });
+            }
+
+            function startApplySession() {
+
+              const userId = localStorage.getItem("loggedInUser");
+
+              // const formData = new URLSearchParams();
+              // formData.append("action", "getSessionWords");
+              // formData.append("user_id", userId);
+
+              fetch("https://script.google.com/macros/s/AKfycbxH_x9vvFDqcqcILRuc3_EHDAIf2L_RMWIi4bJOT-pbcL9_n8c6yy27GBEHtRImTtFi/exec",
+                {
+                  method: "POST",
+                  body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                  console.log("API RESPONSE:", data);
+
+                  if (!data.words) {
+                    alert("Failed to load session words");
+                    return;
+                  }
+
+                  sessionWordPool = data.words;
+
+                  uniqueSessionWords.clear();
+                  applyQuestionCount = 1;
+                  document.getElementById("applyQuestionNumber").innerText = "1";
+
+                  document.getElementById("applyStartScreen").classList.add("hidden");
+                  document.getElementById("applySessionContent").classList.remove("hidden");
+
+                  document.getElementById("applyAnswer").value = "";
+                  document.getElementById("feedbackView").classList.add("hidden");
+                  document.getElementById("answerView").classList.remove("hidden");
+
+                  const actionBtn = document.getElementById("actionButton");
+                  const endBtn = document.getElementById("endSessionBtn");
+
+                  /* fully reset buttons */
+
+                  actionBtn.style.display = "inline-block";
+                  actionBtn.disabled = false;
+                  actionBtn.innerText = "Submit";
+
+                  actionBtn.classList.remove("fade-out");
+                  actionBtn.classList.add("fade-in");
+
+                  endBtn.classList.remove("fade-out");
+                  endBtn.classList.add("fade-in");
+
+                  endBtn.style.marginLeft = "";
+                  endBtn.style.marginRight = "";
+
+                  submitted = false;
+
+                  //generateSessionWordPool();
+                  loadRoundWords();
+                })
+                .catch(err => console.error(err));
+            }
+
+            function loadRoundWords() {
+
+              const container = document.getElementById("applyWordContainer");
+
+              // 🔥 RESET POSITION BEFORE ADDING BUBBLES
+              container.style.transition = "none";
+              container.style.transform = "translateX(0px)";
+
+              container.innerHTML = "";
+
+              // restore animation after reset
+              setTimeout(() => {
+                container.style.transition =
+                  "transform 0.55s cubic-bezier(.4,0,.2,1)";
+              }, 20);
+
+              currentApplyWords = [];
+
+              sessionWordPool.forEach(wordObj => {
+
+                const bubble = document.createElement("div");
+                bubble.className = "apply-bubble";
+
+                bubble.innerHTML = `
+                
+                <div class="apply-bubble-word">${wordObj.word}</div>
+                <div class="apply-bubble-meaning">${wordObj.meaning}</div>
+              `;
+                container.appendChild(bubble);
+              });
+
+              updateVisibleWords();
+            }
+
+            function updateVisibleWords() {
+              currentApplyWords = [];
+              const start = currentRoundIndex * 3;
+              const visibleWords = sessionWordPool.slice(start, start + 5);
+              visibleWords.forEach(w => {
+                currentApplyWords.push(w.word);
+              });
+              document.getElementById("applyQuestionNumber").innerText = currentRoundIndex + 1;
+            }
+
+            function showLogin() {
+              document.getElementById("authOptions").classList.add("hidden");
+              document.getElementById("loginForm").classList.remove("hidden");
+            }
+
+            function showSignup() {
+              document.getElementById("authOptions").classList.add("hidden");
+              document.getElementById("signupForm").classList.remove("hidden");
+            }
+
+
+            function updateLastLogin(userId) {
+
+              const ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1a3B_Lxd0ew2Pyy_5lZYF9MqOw5gnqUZk9MXAPHRzjks/edit?gid=903897810#gid=903897810");
+              const sheet = ss.getSheetByName("Users");
+
+              const rows = sheet.getDataRange().getValues();
+
+              for (let i = 1; i < rows.length; i++) {
+
+                if (rows[i][0] === userId) {
+                  sheet.getRange(i + 1, 6).setValue(new Date());
+                  break;
+                }
+              }
+            }
+
+
+            async function loginUser() {
+
+              showLoader();
+
+              const userInput = document.getElementById("loginUser").value.trim();
+              const passInput = document.getElementById("loginPass").value.trim();
+
+              if (!userInput || !passInput) {
+                hideLoader();
+                alert("Please fill all fields");
+                return;
+              }
+
+
+              try {
+
+                const res = await fetch("https://script.google.com/macros/s/AKfycbxH_x9vvFDqcqcILRuc3_EHDAIf2L_RMWIi4bJOT-pbcL9_n8c6yy27GBEHtRImTtFi/exec", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    action: "login",
+                    user: userInput,
+                    password: passInput
+                  })
+                });
+
+                const data = await res.json();
+
+                if (!data.success) {
+                  hideLoader();
+                  alert("Invalid username/email or password");
+                  return;
+                }
+
+                const user = data.user;
+
+                localStorage.setItem("loggedInUser", user.id);
+                localStorage.setItem("userRole", user.role);
+
+                const now = Date.now();
+
+                localStorage.setItem("loginTimestamp", now);
+                localStorage.setItem("lastActiveTime", now);
+                localStorage.setItem("loginDate", new Date().toDateString());
+
+                loadDoc();
+
+              } catch (err) {
+
+                console.error(err);
+                alert("Server error. Try again.");
+                hideLoader();
+
+              }
+            }
+
+            function signupUser() {
+
+              const user = document.getElementById("signupUser").value.trim();
+              const email = document.getElementById("signupEmail").value.trim();
+              const pass = document.getElementById("signupPass").value.trim();
+
+              if (!user || !email || !pass) {
+                alert("Please fill all fields");
+                return;
+              }
+
+              fetch("https://script.google.com/macros/s/AKfycbxH_x9vvFDqcqcILRuc3_EHDAIf2L_RMWIi4bJOT-pbcL9_n8c6yy27GBEHtRImTtFi/exec")
+                .then(res => res.json())
+                .then(data => {
+
+                  const users = data.user;
+
+                  const alreadyExists = users.find(u =>
+                    u.id === user || u.email === email
+                  );
+
+                  if (alreadyExists) {
+
+                    alert("User already registered. Please login.");
+
+                    document.getElementById("signupUser").value = "";
+                    document.getElementById("signupEmail").value = "";
+                    document.getElementById("signupPass").value = "";
+
+                    document.getElementById("signupForm").classList.add("hidden");
+                    document.getElementById("loginForm").classList.add("hidden");
+
+                    document.getElementById("authOptions").classList.remove("hidden");
+
+                    return;
+                  }
+
+                  fetch("https://script.google.com/macros/s/AKfycbxH_x9vvFDqcqcILRuc3_EHDAIf2L_RMWIi4bJOT-pbcL9_n8c6yy27GBEHtRImTtFi/exec", {
+                    method: "POST",
+                    body: JSON.stringify({
+                      action: "register",
+                      id: user,
+                      email: email,
+                      password: pass
+                    })
+                  })
+                    .then(res => res.json())
+                    .then(response => {
+
+                      if (!response.success) {
+                        alert(response.message || "Signup failed");
+                        return;
+                      }
+
+                      alert("Signup successful. Please login.");
+                      location.reload();
+
+                    })
+                    .catch(err => {
+                      console.error(err);
+                      alert("Server error.");
+                    });
+
+                })
+                .catch(err => {
+                  console.error(err);
+                  alert("Server error.");
+                });
+            }
+
+            function enterApp() {
+              const user = localStorage.getItem("loggedInUser");
+              document.getElementById("sidebarUserName").innerText = user;
+              document.getElementById("authContainer").style.display = "none";
+              document.querySelector(".app-layout").style.display = "flex";
+            }
+
+            function togglePassword(inputId, icon) {
+              const input = document.getElementById(inputId);
+              if (input.type === "password") {
+                input.type = "text";
+                icon.innerText = "🙈";
+              } else {
+                input.type = "password";
+                icon.innerText = "👁";
+              }
+            }
+
+            function logoutUser() {
+
+              localStorage.removeItem("loggedInUser");
+              localStorage.removeItem("userLevel");
+              localStorage.removeItem("overallAccuracy");
+
+              // 🔥 Remove dark mode when logging out
+              document.body.classList.remove("dark-mode");
+              localStorage.setItem("theme", "light");
+
+              // Hide app
+              document.querySelector(".app-layout").style.display = "none";
+
+              // Show auth page
+              document.getElementById("authContainer").style.display = "flex";
+
+              // Reset auth UI
+              document.getElementById("loginForm").classList.add("hidden");
+              document.getElementById("signupForm").classList.add("hidden");
+              document.getElementById("authOptions").classList.remove("hidden");
+
+              // Reset toggle icon
+              document.getElementById("darkToggle").innerHTML = "🌙";
+            }
+
+            function endSession() {
+
+              if (attemptedQuestions === 0) {
+                alert("You haven't attempted any questions.");
+                return;
+              }
+
+              if (!confirm("Are you sure you want to end this session?")) return;
+
+              const userId = localStorage.getItem("loggedInUser");
+              const sessionAccuracy = calculateSessionAccuracy();
+              const sessionId = "S" + Date.now();
+
+              const sessionData = {
+                action: "endSession",
+                user_id: userId,
+                session_id: sessionId,
+                ai_result: lastEvaluationResult,
+                words_attempted: uniqueSessionWords.size
+              };
+
+              const formData = new URLSearchParams();
+              formData.append("action", "endSession");
+              formData.append("payload", JSON.stringify(sessionData));
+
+              // fetch("https://script.google.com/macros/s/AKfycbxH_x9vvFDqcqcILRuc3_EHDAIf2L_RMWIi4bJOT-pbcL9_n8c6yy27GBEHtRImTtFi/exec", {
+              //   method: "POST",
+              //   body: JSON.stringify(sessionData)
+              // });
+
+              fetch("https://script.google.com/macros/s/AKfycbxH_x9vvFDqcqcILRuc3_EHDAIf2L_RMWIi4bJOT-pbcL9_n8c6yy27GBEHtRImTtFi/exec", {
+                method: "POST",
+                body: formData
+              })
+                .then(res => res.json())
+                .then(data => {
+
+                  alert("Session Ended Successfully!");
+
+                  // 🔥 Reset variables
+                  attemptedQuestions = 0;
+                  sessionWordsData = [];
+
+                  // 🔥 Reset UI
+                  document.getElementById("applySessionContent").classList.add("hidden");
+                  document.getElementById("applyStartScreen").classList.remove("hidden");
+
+                })
+                .catch(err => {
+                  console.error(err);
+                  alert("Error saving session.");
+                });
+            }
+
+            function calculateSessionAccuracy() {
+              if (attemptedQuestions === 0) return 0;
+              let total = 0;
+              sessionWordsData.forEach(w => {
+                total += w.accuracy;
+              });
+              return Math.round(total / attemptedQuestions);
+            }
+
+            function resetApplySessionUI() {
+              attemptedQuestions = 0;
+              sessionWordsData = [];
+              document.getElementById("applySessionContent").classList.add("hidden");
+              document.getElementById("applyStartScreen").classList.remove("hidden");
+            }
+
+            function showLoader() {
+              document.getElementById("loadingOverlay").classList.remove("hidden");
+              document.body.style.overflow = "hidden"; // prevent scroll
+            }
+
+            function hideLoader() {
+              document.getElementById("loadingOverlay").classList.add("hidden");
+              document.body.style.overflow = "";
+            }
+
+            function animateWordShift() {
+              const container = document.getElementById("applyWordContainer");
+              const bubble = container.querySelector(".apply-bubble");
+              const bubbleWidth = bubble.offsetWidth + 12; // include gap
+              const shift = bubbleWidth * 3;
+              container.style.transition = "transform 0.5s ease";
+              container.style.transform = `translateX(-${shift}px)`;
+            }
+
+            function appendNewBubbles(words) {
+              const container = document.getElementById("applyWordContainer");
+              words.forEach(wordObj => {
+                const bubble = document.createElement("div");
+                bubble.className = "apply-bubble";
+                bubble.innerHTML = `
+              <div class="apply-bubble-word">${wordObj.word}</div>
+              <div class="apply-bubble-meaning">${wordObj.meaning}</div>
+              `;
+                container.appendChild(bubble);
+              });
+            }
+
+          </script>
+        </div>
+      </div> <!-- END learnPage -->
+
+      <!-- APPLY PAGE -->
+      <div id="applyPage" class="page" style="display:none;">
+        <div class="main-container">
+
+          <!-- SESSION START SCREEN -->
+          <div id="applyStartScreen" class="apply-start-screen">
+            <div class="apply-start-card">
+              <h2>✍ Application Trainer</h2>
+              <p>
+                You will be given 5 words per question.
+                Use them accurately in context to strengthen your vocabulary mastery.
+              </p>
+              <button class="start-session-btn" onclick="startApplySession()">
+                Start Session
+              </button>
+            </div>
+          </div>
+
+          <!-- SESSION CONTENT (HIDDEN INITIALLY) -->
+          <div id="applySessionContent" class="hidden">
+
+            <!-- QUESTION BAR -->
+            <div class="w3-bar w3-light-grey">
+              <div class="w3-bar-item apply-question-bar">
+                <span id="applyQuestionText">
+                  R O U N D
+                </span>
+                <span id="applyQuestionNumber"> 1</span>
+
+              </div>
+            </div>
+
+            <!-- WORD BUBBLES -->
+            <div class="apply-bubble-wrapper">
+              <div class="apply-word-bubbles" id="applyWordContainer"></div>
+            </div>
+
+            <!-- INTERACTION CARD -->
+            <div class="apply-interaction-card">
+              <div id="answerView" class="smooth-panel">
+                <div class="answer-wrapper">
+                  <textarea id="applyAnswer" class="apply-textarea" placeholder="Write a meaningful paragraph using the vocabulary words below.
+                    Focus on grammatical accuracy and natural contextual usage."></textarea>
+                  <div id="aiProcessingOverlay" class="ai-overlay hidden">
+                    <div class="thinking-dots">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="feedbackView" class="smooth-panel hidden">
+                <div class="feedback-header">
+                  AI Evaluation Report
+                </div>
+
+                <div class="answer-title">Your Answer:</div>
+                <div id="finalAnswer" class="answer-display"></div>
+
+                <div class="ai-answer-title">AI Generated Answer:</div>
+
+                <div id="aiSuggestion" class="answer-display">
+                  AI feedback will appear here.
+                </div>
+
+                <div class="feedback-overall">
+                  <div class="feedback-metric">
+                    <span>Overall</span>
+                    <strong id="overallAccuracy">--%</strong>
+                  </div>
+                  <div class="feedback-metric">
+                    <span>Grammar</span>
+                    <strong id="grammarAccuracy">--%</strong>
+                  </div>
+                  <div class="feedback-metric">
+                    <span>Context</span>
+                    <strong id="contextAccuracy">--%</strong>
+                  </div>
+                </div>
+              </div>
+
+              <button id="actionButton" class="apply-submit-btn fade-in" onclick="handleAction()">
+                Submit
+              </button>
+
+              <button id="endSessionBtn" class="apply-end-btn fade-in" onclick="endSession()">
+                End Session
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- END mainContent -->
+  </div> <!-- END app-layout -->
+
+
+
+  <!-- REPORT MODAL -->
+  <div id="reportModal" class="modal">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h3>📊 Progress Report</h3>
+        <span class="close-btn" onclick="closeReportModal()">×</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="report-stats">
+
+          <div class="stat-card correct-card">
+            <h4>Correct</h4>
+            <p id="correctCount">0</p>
+          </div>
+
+          <div class="stat-card wrong-card">
+            <h4>Wrong</h4>
+            <p id="wrongCount">0</p>
+          </div>
+
+          <div class="stat-card skip-card">
+            <h4>Skipped</h4>
+            <p id="skipCount">0</p>
+          </div>
+
+        </div>
+
+        <div class="accuracy-ring">
+          <svg width="180" height="180">
+            <circle cx="90" cy="90" r="75" class="ring-bg" />
+            <circle cx="90" cy="90" r="75" class="ring-progress" id="progressRing" />
+          </svg>
+          <div class="accuracy-text">
+            <span id="accuracyPercent">0%</span>
+            <small>Accuracy</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="tableTooltip" class="floating-tooltip"></div>
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loader"></div>
+  </div>
+</body>
+
+<style>
+  html,
+  body {
+    margin: 0;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #efefef;
+    /*#eef2f7, #e7ecf3;, #f3f3f3*/
+  }
+
+  body:not(.dark-mode) .options-card,
+  body:not(.dark-mode) #correction_container,
+  body:not(.dark-mode) .modal-content {
+    border: 1px solid #e2e8f0;
+  }
+
+  body:not(.dark-mode) .example-box {
+    border-left-width: 4px;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #2563eb;
+  }
+
+  body:not(.dark-mode) .options-card {
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  }
+
+  body:not(.dark-mode) #correction_container {
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+  }
+
+  body:not(.dark-mode) .modal-content {
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18);
+  }
+
+  body:not(.dark-mode) .w3-bar {
+    box-shadow:
+      0 10px 25px rgba(37, 99, 235, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+
+  .main-container {
+    max-width: 1200px;
+    /* keep layout compact */
+    margin: 0 auto;
+    /* center content */
+    padding: 0 20px 20px 20px;
+    /* remove top padding */
+  }
+
+  /* Question Bar */
+  .w3-bar {
+    background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    /* box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25); */
+  }
+
+  #question {
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 100%;
+    white-space: nowrap;
+    /* prevent wrapping */
+  }
+
+  .question-number {
+    font-size: 26px;
+    font-weight: 700;
+    flex: 0 0 auto;
+    /* no expansion */
+    margin: 0;
+    color: white;
+  }
+
+  .question-word {
+    font-size: 26px;
+    font-weight: 700;
+    flex: 0 0 auto;
+    margin: 0;
+    color: white;
+  }
+
+  .question-audio {
+    flex: 0 0 auto;
+    margin-left: 6px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    opacity: 1;
+    transition: 0.2s ease;
+  }
+
+  .question-audio:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  /* Layout for options + right panel */
+  .question-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  /* LEFT SIDE */
+  .left-section {
+    flex: 1.2;
+  }
+
+  /* RIGHT SIDE */
+  .right-section {
+    flex: 1;
+  }
+
+  /* Options */
+  /* Base option */
+  .div {
+    padding: 10px 18px;
+    width: 100%;
+    margin: 6px 0;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #f4f4fa;
+    color: #111827;
+    /* 🔥 Add this */
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    line-height: 1.5;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+
+  .div span {
+    color: inherit;
+    font-weight: 500;
+  }
+
+  /* Hover BEFORE answering */
+  .div:not(.answered):hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+    background: #2563eb;
+    color: white;
+  }
+
+  /* Ensure label turns white */
+  .div:not(.answered):hover label {
+    color: white;
+  }
+
+  /* After answered, disable hover animation */
+  .div.answered:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Options Card */
+  .options-card {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .options-card input[type="radio"] {
+    transform: scale(1.1);
+    margin-right: 10px;
+    border: 1px solid #e5e7eb;
+  }
+
+  body:not(.dark-mode) .options-card input[type="radio"] {
+    outline: 1.5px solid #000;
+    border-radius: 50%;
+  }
+
+  /* Base button style */
+  .button {
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: none;
+  }
+
+  /* NEXT - Default (Before Answer) */
+  #next {
+    background: #2563eb;
+    /* Solid strong blue */
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Hover */
+  #next:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(29, 78, 216, 0.45);
+  }
+
+  /* Disabled - Light Mode */
+  #next:disabled {
+    background: #94a3b8;
+    border-color: #94a3b8;
+    color: #ffffff;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  /* NEXT BUTTON - Dark Mode */
+  /* DARK MODE - NEXT (Before Answer Only) */
+  body.dark-mode #next {
+    background: #2563eb;
+    /* Solid blue */
+    color: white;
+    font-weight: 700;
+    text-shadow: none;
+    /* REMOVE blur */
+    box-shadow: none;
+    /* REMOVE glow */
+    border: none;
+  }
+
+  body.dark-mode #next,
+  body.dark-mode #skip,
+  body.dark-mode .report-icon,
+  body.dark-mode .apply-submit-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+  }
+
+  body.dark-mode #next:hover,
+  body.dark-mode #skip:hover,
+  body.dark-mode .apply-submit-btn:hover {
+    background: #1d4ed8;
+  }
+
+  body.dark-mode #skip:disabled {
+    background: #64748b;
+    color: #e2e8f0;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 1;
+  }
+
+  /* Hover - Dark Mode */
+  body.dark-mode #next:hover:not(:disabled) {
+    background: #16a34a;
+    border-color: #16a34a;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+  }
+
+  /* Disabled - Dark Mode */
+  body.dark-mode #next:disabled {
+    background: #334155;
+    border-color: #334155;
+    color: #0f172a;
+  }
+
+  /* SKIP - Secondary */
+  #skip {
+    background: #2563eb;
+    color: white;
+  }
+
+  #skip:hover:not(:disabled) {
+    background: #2563eb;
+    color: white;
+    transform: translateY(-3px);
+  }
+
+  /* SAME FOR LIGHT + DARK */
+  #skip:disabled {
+    background: #64748b;
+    /* slate-500 */
+    color: #e2e8f0;
+    /* soft white */
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 1;
+    /* prevent fading */
+  }
+
+  .report-icon {
+    background: #2563eb;
+    color: white;
+    border: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .report-icon:hover {
+    transform: translateY(-3px);
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 15px;
+  }
+
+  .utility-buttons {
+    display: flex;
+    gap: 12px;
+  }
+
+  /* Image */
+  #image_box {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: none;
+    transition: opacity 0.4s ease;
+  }
+
+  #image_box.loaded {
+    opacity: 1;
+  }
+
+  /* Examples */
+  .example-box {
+    padding: 12px;
+    background: #ffffff;
+    border-left: 4px solid #2563eb;
+    border-radius: 6px;
+    display: none;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    margin-top: 0;
+  }
+
+  /* Main container */
+  #correction_container {
+    margin-top: 50px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Header */
+  .word-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .word-list-header h3 {
+    margin: 0;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  /* Base button style */
+  .word-list-actions button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    /* Rounded rectangle */
+    border: none;
+    background: #2563eb;
+    /* Theme blue */
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  /* Hover Levitation */
+  .word-list-actions button:hover {
+    transform: translateY(-4px);
+    /* Lift */
+    /* box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35); */
+  }
+
+  /* Click press effect */
+  .word-list-actions button:active {
+    transform: translateY(-1px);
+    /* box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2); */
+  }
+
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  th {
+    background: #2563eb;
+    color: white;
+    padding: 12px;
+    text-align: left;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  tr:nth-child(even) {
+    background: #f9fafb;
+  }
+
+  tr:hover {
+    background: #eef2ff;
+  }
+
+  td:first-child {
+    font-weight: 600;
+  }
+
+  /* Word list wrapper area */
+  #wordTableWrapper {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease;
+  }
+
+  #wordTableWrapper.open {
+    max-height: 400px;
+    /* large enough */
+    overflow-y: auto;
+  }
+
+  /* Responsive */
+  @media(max-width: 900px) {
+    .question-layout {
+      flex-direction: column;
+    }
+  }
+
+  /* WORD LIST CONTAINER */
+  #correction_container {
+    margin-top: 40px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Section title */
+  .word-list-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  th {
+    background: #2563eb;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  tr:nth-child(even) {
+    background: #f9fafb;
+  }
+
+  tr:hover {
+    background: #eef2ff;
+  }
+
+  .word-pill {
+    position: relative;
+    /* important */
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 6px 8px 6px 0;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: #1f2937;
+    color: #ffffff;
+  }
+
+  .word-pill .tooltiptext {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    /* 🔥 auto width */
+    max-width: 90vw;
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 18px 20px;
+    border-radius: 14px;
+    z-index: 1000;
+    background: #111827;
+    color: #ffffff;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    white-space: nowrap;
+    /* keep examples single line */
+
+  }
+
+  body.dark-mode .word-pill .tooltiptext {
+    background: #ffffff;
+    color: #111827;
+  }
+
+  .word-pill:hover {
+    transform: translateY(-3px);
+    background: #1f2937;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Word bubble invert */
+  body.dark-mode .word-pill {
+    background: #f9fafb;
+    color: #111827;
+  }
+
+  .tooltip-title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .tooltip-meaning {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .tooltip-divider {
+    height: 1px;
+    margin: 8px 0;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  body.dark-mode .tooltip-divider {
+    background: #e5e7eb;
+  }
+
+  .tooltip-examples p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 6px 0;
+    font-size: 14px;
+  }
+
+  .tooltip-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tooltip-line {
+    white-space: nowrap;
+    /* 🔥 force single line */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* ... if too long */
+    font-size: 13px;
+  }
+
+  /* Show on hover */
+  .word-pill:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+
+  }
+
+  td:first-child {
+    font-weight: 600;
+    color: #111827;
+  }
+
+  /* Content */
+  #reportContent {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    padding: 30px;
+    /* ADD THIS */
+    transition:
+      max-height 0.5s ease,
+      opacity 0.3s ease;
+  }
+
+  #reportContent.open {
+    max-height: 700px;
+    opacity: 1;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .div.correct {
+    background: #006400;
+    color: white;
+  }
+
+  .div.wrong {
+    background: #8B0000;
+    color: white;
+  }
+
+  .div.correct label,
+  .div.wrong label {
+    color: white;
+  }
+
+  /* When option is correct */
+  .div.correct input[type="radio"]:checked {
+    background: white;
+    border-color: white;
+  }
+
+  /* Inner dot for correct */
+  .div.correct input[type="radio"]:checked::after {
+    background: #006400;
+  }
+
+  /* When option is wrong */
+  .div.wrong input[type="radio"]:checked {
+    background: white;
+    border-color: white;
+  }
+
+  /* Inner dot for wrong */
+  .div.wrong input[type="radio"]:checked::after {
+    background: #8B0000;
+  }
+
+  /* Hide default radio completely */
+  .div input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    position: relative;
+    margin-right: 12px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  /* Hover */
+  .div input[type="radio"]:hover {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+  }
+
+  /* Checked state */
+  .div input[type="radio"]:checked {
+    background: #2563eb;
+  }
+
+  /* Inner white dot */
+  .div input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* ICON BUTTON (Refresh) */
+  .icon-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: #2563eb;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  /* Hover Lift */
+  .icon-btn:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Click Press */
+  .icon-btn:active {
+    transform: translateY(-1px);
+  }
+
+  /* Spin animation */
+  .icon-btn.spin i {
+    animation: spin 0.9s ease;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .report-stats {
+    display: flex;
+    gap: 30px;
+    /* more space */
+    margin-bottom: 50px;
+    /* more separation from ring */
+    justify-content: center;
+  }
+
+  .stat-card {
+    width: 160px;
+    /* fixed size looks better */
+    padding: 28px 20px;
+    border-radius: 18px;
+    color: white;
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease;
+  }
+
+  .stat-card h4 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .stat-card p {
+    font-size: 32px;
+    margin: 0;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .correct-card {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+  }
+
+  .wrong-card {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+  }
+
+  .skip-card {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  }
+
+  .stat-card p {
+    font-size: 28px;
+    margin: 10px 0 0;
+  }
+
+  /* Circular Ring */
+  .accuracy-ring {
+    position: relative;
+    width: 180px;
+    /* slightly bigger */
+    margin: 0 auto 20px;
+    /* more bottom spacing */
+  }
+
+  .accuracy-text span {
+    font-size: 26px;
+  }
+
+  .accuracy-text small {
+    display: block;
+    margin-top: 6px;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  .ring-bg {
+    fill: none;
+    stroke: #e5e7eb;
+    stroke-width: 12;
+  }
+
+  .ring-progress {
+    fill: none;
+    stroke: #2563eb;
+    stroke-width: 12;
+    stroke-linecap: butt;
+    stroke-dasharray: 408;
+    stroke-dashoffset: 408;
+    transition: stroke-dashoffset 0.6s ease;
+  }
+
+  #reportArrow {
+    transition: transform 0.4s ease;
+  }
+
+  #reportContent.open+#reportArrow {
+    transform: rotate(180deg);
+  }
+
+  /* MODAL BACKGROUND */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  /* When active */
+  .modal.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Modal Box */
+  .modal-content {
+    background: white;
+    width: 500px;
+    max-width: 90%;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+
+  .modal.active .modal-content {
+    transform: scale(1);
+  }
+
+  /* Header */
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .close-btn {
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  /* DARK MODE */
+  /* PAGE BACKGROUND */
+  body.dark-mode {
+    background: #1F1F1F;
+    color: #ffffff;
+  }
+
+  /* CARDS (Options + Revision + Modal) */
+  body.dark-mode .options-card,
+  body.dark-mode #correction_container,
+  body.dark-mode .modal-content,
+  body.dark-mode .example-box {
+    background: #3c3c3c;
+    border: 1px solid #2a2a2a;
+    box-shadow: none;
+  }
+
+  body.dark-mode .ring-bg {
+    stroke: #2a2a2a;
+  }
+
+  body.dark-mode .ring-progress {
+    stroke: #2563eb;
+  }
+
+  body.dark-mode .options-card {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  }
+
+  body.dark-mode #correction_container {
+    background: #3c3c3c;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Table row tooltip INSIDE row */
+  #RevisionList tr {
+    position: relative;
+  }
+
+  body.dark-mode #wordTableWrapper {
+    background: transparent;
+  }
+
+  body.dark-mode th {
+    background: #2563eb;
+  }
+
+  body.dark-mode td {
+    background: #252525;
+    color: #f9fafb;
+  }
+
+  /* OPTION BUTTONS DEFAULT */
+  body.dark-mode .div {
+    background: #1e1e1e;
+    border: 1px solid #3c3c3c;
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  /* Preserve correct/wrong colors in dark mode */
+  body.dark-mode .div.correct {
+    background: #16a34a !important;
+    color: white !important;
+  }
+
+  body.dark-mode .div.wrong {
+    background: #dc2626 !important;
+    color: white !important;
+  }
+
+  body.dark-mode .div:not(.answered):hover {
+    background: #2563eb;
+    box-shadow: none;
+  }
+
+  body.dark-mode .word-list-header h3 {
+    color: #f9fafb;
+  }
+
+  body.dark-mode .tooltiptext {
+    color: #111827;
+  }
+
+  body.dark-mode .w3-bar {
+    border: none !important;
+  }
+
+  .floating-tooltip {
+    position: fixed;
+    background: #111827;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    width: max-content;
+    /* 🔥 auto width */
+    max-width: 90vw;
+    /* prevent screen overflow */
+    white-space: nowrap;
+    /* keep single line */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 99999;
+    pointer-events: none;
+  }
+
+  /* Dark mode invert */
+  body.dark-mode .floating-tooltip {
+    background: #f9fafb;
+    color: #111827;
+  }
+
+  .mastered-header {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: #dcfce7;
+    color: #15803d;
+    display: inline-block;
+  }
+
+  body.dark-mode .mastered-header {
+    background: #14532d;
+    color: #bbf7d0;
+  }
+
+  /* Inner mastered card */
+  .mastered-subcard {
+    margin-top: 35px;
+    padding: 20px;
+    border-radius: 12px;
+    background: #f8fafc;
+    box-shadow: inset 0 0 0 1px #e5e7eb;
+    border-left: 4px solid #16a34a;
+  }
+
+  /* Mastered title */
+  .mastered-header {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #15803d;
+  }
+
+  body.dark-mode .mastered-subcard {
+    background: #1e1e1e;
+    box-shadow: inset 0 0 0 1px #334155;
+  }
+
+  body.dark-mode .mastered-header {
+    color: #bbf7d0;
+  }
+
+
+
+
+
+  /* Base placeholder background */
+  body.loading #image_box {
+    position: relative;
+    overflow: hidden;
+    background: #e5e7eb;
+    color: transparent !important;
+  }
+
+  #image_container {
+    width: 100%;
+    height: 250px;
+    /* fixed height */
+    background: #f1f5f9;
+    border-radius: 10px;
+    display: none;
+    /* hidden initially */
+    position: relative;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  /* Image shimmer while loading */
+  #image_container.loading {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #image_container.loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-20deg);
+    animation: shimmerMove 1.3s infinite;
+  }
+
+  body.dark-mode #image_container.loading::after {
+    background: linear-gradient(120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%);
+  }
+
+  /* Light mode */
+  body:not(.dark-mode) #image_container {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* Dark mode */
+  body.dark-mode #image_container {
+    background: #3c3c3c;
+    border: 1px solid #334155;
+  }
+
+  #image_container.visible {
+    display: flex;
+    /* only after answer */
+  }
+
+  body.dark-mode .image-fallback {
+    background: rgba(255, 255, 255, 0.06);
+    color: #cbd5e1;
+  }
+
+  .image-fallback {
+    display: none;
+    color: #64748b;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border-radius: 8px;
+    background: #ffffff;
+    border: none;
+  }
+
+
+  /* Loading state */
+  body.loading #image_box {
+    position: relative;
+    color: transparent !important;
+    background: linear-gradient(90deg,
+        #e5e7eb 25%,
+        #f3f4f6 50%,
+        #e5e7eb 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 1.5s infinite linear;
+    border-radius: 12px;
+  }
+
+  .w3-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .w3-bar .apply-question-bar {
+    float: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+  }
+
+  body.loading .w3-bar,
+  body.loading .div {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* LIGHT MODE shimmer */
+  body.loading .div::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(120deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.06) 50%,
+        rgba(0, 0, 0, 0) 100%);
+    transform: skewX(-20deg);
+    animation: shimmerMove 1.3s infinite;
+  }
+
+
+  body.loading #question::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0) 100%);
+    transform: skewX(-20deg);
+    animation: shimmerMove 1.3s infinite;
+  }
+
+  @keyframes shimmerMove {
+    0% {
+      left: -150%;
+    }
+
+    100% {
+      left: 150%;
+    }
+  }
+
+  body.dark-mode.loading .w3-bar::after,
+  body.dark-mode.loading .div::after {
+    background: linear-gradient(120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.25) 50%,
+        rgba(255, 255, 255, 0) 100%);
+  }
+
+
+  .app-layout {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    padding: 50px 20px;
+    min-height: 100vh;
+  }
+
+
+  .sidebar {
+    width: 215px;
+    flex: 0 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 0;
+    transition: width 0.3s ease;
+    margin-left: 30px;
+  }
+
+  body.dark-mode .sidebar {
+    background: #3c3c3c;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 0;
+    transition: width 0.3s ease;
+    margin-left: 30px;
+  }
+
+
+  body.learn-mode .sidebar {
+    margin-bottom: 34px;
+  }
+
+  body.apply-mode .sidebar {
+    margin-bottom: 34px;
+  }
+
+  body.dark-mode .sidebar.collapsed {
+    width: 60px;
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+
+  .sidebar.collapsed {
+    width: 60px;
+    flex: 0 0 auto;
+    overflow: hidden;
+  }
+
+  .sidebar.collapsed .brand,
+  .sidebar.collapsed .dark-toggle-btn,
+  .sidebar.collapsed .sidebar-menu,
+  .sidebar.collapsed .sidebar-footer {
+    display: none;
+  }
+
+  .sidebar.collapsed .brand-row {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .sidebar-menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  /* Sidebar menu container */
+  body.dark-mode .sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Menu items */
+  body.dark-mode .menu-item {
+    padding: 12px 18px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* LEFT aligned */
+    gap: 10px;
+    text-align: left;
+    color: black;
+    /* soft gray text */
+    background: transparent;
+    transition: background 0.2s ease, color 0.2s ease;
+    background: white;
+  }
+
+  /* Hover */
+  body.dark-mode .menu-item:hover {
+    background: #1e1e20;
+    /* subtle hover */
+    color: #ffffff;
+  }
+
+  /* Active item */
+  body.dark-mode .menu-item.active {
+    background: #2563eb;
+    /* blue only here */
+    color: #ffffff;
+  }
+
+  /* Footer */
+  body.dark-mode .sidebar-footer {
+    padding: 15px 18px;
+    border-top: 1px solid #1f2937;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+  }
+
+  /* Logout */
+  body.dark-mode .logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #f87171;
+    /* soft red */
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  body.dark-mode .logout-btn:hover {
+    color: #ef4444;
+  }
+
+  .sidebar-header,
+  .sidebar-footer {
+    width: 100%;
+    text-align: left;
+  }
+
+  .sidebar-footer {
+    padding-left: 18px;
+    padding: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: auto;
+  }
+
+  .main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 15px;
+    transition: margin-left 0.3s ease;
+    width: 100%;
+    padding-top: 0;
+  }
+
+  .menu-item {
+    width: 90%;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+    transition: 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+    padding-left: 18px;
+    margin-left: 12px;
+    background: grey;
+  }
+
+  .menu-item:hover {
+    background: #f3f4f6;
+  }
+
+  .menu-item.active {
+    background: #2563eb;
+    color: white;
+  }
+
+  .sidebar-menu .menu-item,
+  body.dark-mode .sidebar-menu .menu-item {
+    cursor: pointer;
+  }
+
+  .sidebar-menu .menu-item:hover {
+    background: #1e293b;
+  }
+
+  .sidebar-menu .menu-item.active {
+    background: #2563eb;
+  }
+
+  .menu-toggle {
+    font-size: 22px;
+    cursor: pointer;
+    color: #2563eb;
+    transition: transform 0.2s ease;
+  }
+
+  .menu-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  .page {
+    display: none;
+  }
+
+  .page.active-page {
+    display: block;
+  }
+
+  /* Textarea */
+  .apply-textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 15px;
+    font-family: inherit;
+  }
+
+  .apply-textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  }
+
+  /* Submit Button */
+  .apply-submit-btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    background: #2563eb;
+    color: white;
+    transition: 0.35s ease;
+  }
+
+  /* Feedback Card */
+  .apply-feedback-card {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    min-height: 60px;
+  }
+
+  /* Dark Mode Support */
+  body.dark-mode .apply-feedback-card {
+    background: #1e293b;
+    color: #f9fafb;
+  }
+
+  body.dark-mode .apply-textarea {
+    background: #334155;
+    border: 1px solid #475569;
+    color: #f9fafb;
+  }
+
+  body.dark-mode .apply-textarea:focus {
+    border-color: #2563eb;
+  }
+
+  /* PAGE TITLE */
+  .apply-page-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+
+  /* Question text inside blue bar */
+  .apply-question-bar {
+    font-size: 26px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .apply-textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 15px;
+    font-family: inherit;
+  }
+
+  .apply-textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  }
+
+  .apply-submit-btn {
+    padding: 11px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    background: #2563eb;
+    color: white;
+    transition: 0.25s ease;
+  }
+
+  .apply-submit-btn:hover {
+    transform: translateY(-3px);
+    background: #1d4ed8;
+  }
+
+  body.dark-mode #applyPage .apply-submit-btn:hover {
+    transform: translateY(-3px);
+    background: #1d4ed8;
+  }
+
+  /* FEEDBACK CARD */
+  .apply-feedback-card {
+    margin-top: 25px;
+    padding: 22px;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    min-height: 60px;
+  }
+
+  /* DARK MODE SUPPORT */
+  body.dark-mode .apply-feedback-card {
+    background: #1e293b;
+    color: #f9fafb;
+  }
+
+  body.dark-mode .apply-textarea {
+    background: #334155;
+    border: 1px solid #475569;
+    color: #f9fafb;
+  }
+
+  .apply-bubble-wrapper {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    background: #eef2f7;
+    background: transparent;
+    overflow: hidden;
+    justify-content: center;
+    /* Latest change */
+  }
+
+  /* Word Bubble Container */
+  .apply-word-bubbles {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 12px;
+    justify-content: flex-start;
+    margin: 25px 0;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: visible;
+    width: max-content;
+    transition: transform 0.6s cubic-bezier(.4, 0, .2, 1);
+    background: transparent;
+    will-change: transform;
+    padding-top: 7px;
+    padding-left: 6px;
+    padding-bottom: 6px;
+    left: 0;
+  }
+
+  /* Individual Bubble */
+  .apply-bubble {
+    background: #ffffff;
+    padding: 14px 18px;
+    border-radius: 14px;
+    width: 220px;
+    height: 95px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex: 0 0 220px;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .apply-bubble:hover {
+    transform: translateY(-5px);
+  }
+
+  /* Word */
+  .apply-bubble-word {
+    font-weight: 600;
+    font-size: clamp(14px, 1.1vw, 18px);
+    font-size: 15px;
+    margin-bottom: 6px;
+    color: #111827;
+  }
+
+  /* Meaning */
+  .apply-bubble-meaning {
+    font-size: clamp(12px, 0.9vw, 14px);
+    opacity: 0.8;
+    color: #64748b;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Dark Mode */
+  body.dark-mode .apply-bubble {
+    background: #1e293b;
+    color: #f9fafb;
+  }
+
+  body.dark-mode .apply-bubble-meaning {
+    color: #cbd5e1;
+  }
+
+  .feedback-header {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .feedback-overall {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .feedback-metric {
+    background: #f1f5f9;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    flex: 1;
+  }
+
+  .feedback-metric span {
+    font-size: 13px;
+    display: block;
+    color: #64748b;
+  }
+
+  .feedback-metric strong {
+    font-size: 20px;
+    color: #111827;
+  }
+
+  body.dark-mode .feedback-metric strong {
+    color: white;
+  }
+
+  body.dark-mode .feedback-metric span {
+    color: white;
+  }
+
+  body.dark-mode .answer-display {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Dark mode */
+  body.dark-mode .feedback-metric {
+    background: #1e1e1e;
+  }
+
+  .apply-interaction-card {
+    margin-top: 25px;
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 16px;
+    margin-top: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.4s ease;
+    border: 1px solid transparent;
+  }
+
+  /* Smooth fade */
+  #answerSection,
+  #feedbackSection {
+    transition: opacity 0.4s ease;
+  }
+
+  #answerSection,
+  #feedbackSection {
+    transition: opacity 0.5s ease;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .visible {
+    opacity: 1;
+    pointer-events: auto;
+    height: auto;
+  }
+
+  .answer-title,
+  .ai-answer-title {
+    margin-top: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2563eb;
+  }
+
+  body.dark-mode .answer-title,
+  body.dark-mode .ai-answer-title {
+    margin-top: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2997ff;
+  }
+
+  .answer-display {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #e2e8f0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .apply-start-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+  }
+
+  .apply-start-card {
+    background: white;
+    padding: 40px;
+    border-radius: 18px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  .apply-start-card h2 {
+    margin-bottom: 15px;
+  }
+
+  body.dark-mode .apply-start-card h2 {
+    color: black;
+  }
+
+  .apply-start-card p {
+    margin-bottom: 25px;
+    color: #475569;
+  }
+
+  .start-session-btn {
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .start-session-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+  }
+
+  .auth-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eef2f7;
+  }
+
+  .auth-card {
+    background: white;
+    padding: 40px;
+    border-radius: 18px;
+    width: 380px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .auth-title {
+    margin-bottom: 30px;
+  }
+
+  .auth-btn {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .auth-btn.secondary {
+    background: #64748b;
+  }
+
+  .auth-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+  }
+
+  .auth-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .auth-form input {
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .auth-submit {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: #16a34a;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .password-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+  }
+
+  .toggle-eye {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+    opacity: 0.6;
+    transition: 0.2s ease;
+  }
+
+  .toggle-eye:hover {
+    opacity: 1;
+  }
+
+
+
+  .logged-user {
+    font-size: 14px;
+    margin-bottom: 10px;
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .logout-btn {
+    font-size: 14px;
+    cursor: pointer;
+    color: #ff4d4d;
+    transition: 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .logout-btn:hover {
+    transform: translateX(4px);
+  }
+
+  .apply-end-btn {
+    margin-top: 10px;
+    background: #1e1e1e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.35s ease;
+  }
+
+  .apply-end-btn:hover {
+    background: black;
+    transform: translateY(-2px);
+  }
+
+  @keyframes dotWave {
+
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+
+    30% {
+      transform: translateY(-6px);
+      opacity: 1;
+    }
+  }
+
+  .smooth-panel {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .smooth-panel.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .highlight-word {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  body.dark-mode .highlight-word {
+    background: #2997ff;
+    color: #111827;
+  }
+
+  body.dark-mode #applyPage {
+    background: transparent;
+    /* deep neutral black */
+  }
+
+  body.dark-mode #applyPage .apply-bubble {
+    background: #3c3c3c;
+    /* dark surface */
+  }
+
+  body.dark-mode #applyPage .apply-bubble-word {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  body.dark-mode #applyPage .apply-bubble-meaning {
+    color: #cbd5e1;
+  }
+
+  body.dark-mode #applyPage .apply-textarea {
+    background: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #1f2937;
+  }
+
+  body.dark-mode #applyPage .apply-textarea::placeholder {
+    color: #64748b;
+  }
+
+  body.dark-mode #applyPage .apply-interaction-card {
+    background: #3c3c3c;
+    /* border: 1px solid #111827; */
+  }
+
+  body.dark-mode #applyPage .w3-bar {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb) !important;
+  }
+
+  body.dark-mode #applyPage .apply-submit-btn {
+    background: #2563eb;
+    color: #ffffff;
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    margin-bottom: 16px;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .sidebar-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Dark mode toggle */
+  .dark-toggle-btn {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 6px;
+    color: #1f2937;
+    transition: transform 0.2s ease;
+  }
+
+  .dark-toggle-btn:hover {
+    transform: scale(1.1);
+  }
+
+  body.dark-mode .dark-toggle-btn {
+    color: #f1f5f9;
+  }
+
+  .dark-toggle-btn {
+    color: #1f2937;
+  }
+
+  body.dark-mode .ai-report-container {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding-left: 0;
+    padding-right: 0;
+    padding: 0;
+  }
+
+  body.dark-mode #finalAnswer {
+    background: #1e1e1e;
+    border: #3c3c3c;
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: #ffffff;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  body.dark-mode #aiSuggestion {
+    background: #1e1e1e;
+    border: #3c3c3c;
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: #f1f5f9;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  body.dark-mode .apply-interaction-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    /* subtle slate border */
+    padding: 28px;
+  }
+
+  /* body.dark-mode .apply-interaction-card>* {
+    margin-bottom: 20px;
+  } */
+
+  /* Dark Mode Main Content */
+  body.dark-mode .main-content {
+    background: transparent;
+  }
+
+  body.dark-mode .sidebar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2px;
+    /* background: linear-gradient(to bottom, black, transparent); */
+    opacity: 0.6;
+  }
+
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .loading-overlay.hidden {
+    display: none;
+  }
+
+  /* Spinner */
+  .loader {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #e5e7eb;
+    border-top: 6px solid #2563eb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .answer-wrapper {
+    position: relative;
+  }
+
+  .apply-textarea.blur {
+    filter: blur(3px);
+    pointer-events: none;
+  }
+
+  /* overlay */
+
+  .ai-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+
+
+  .ai-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* thinking dots */
+
+
+  .thinking-dots {
+    display: flex;
+    gap: 16px;
+  }
+
+  .thinking-dots span {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    animation: dotWave 1s infinite cubic-bezier(.45, .05, .55, .95);
+  }
+
+  /* LIGHT MODE */
+
+  body:not(.dark-mode) .thinking-dots span {
+    background: #2563eb;
+  }
+
+  /* DARK MODE */
+
+  body.dark-mode .thinking-dots span {
+    background: white;
+  }
+
+  /* delay */
+
+  .thinking-dots span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  .thinking-dots span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  /* SIDE WAVE ANIMATION */
+
+  @keyframes dotWave {
+
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+    }
+
+    30% {
+      transform: translateY(-12px);
+    }
+
+  }
+
+  .thinking-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .thinking-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes pulseDots {
+
+    0%,
+    80%,
+    100% {
+      transform: scale(0.6);
+      opacity: 0.4;
+    }
+
+    40% {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+  }
+
+  .fade-out {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.35s ease;
+    pointer-events: none;
+  }
+
+  .fade-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.35s ease;
+  }
+
+  .apply-bubble.completed {
+    border: 2px solid #3b82f6;
+  }
+
+  body.dark-mode .apply-bubble.completed {
+    border: 1px solid white;
+  }
+
+  .apply-textarea::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .apply-textarea::-webkit-scrollbar-track {
+    background: #efefef;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .apply-textarea::-webkit-scrollbar-thumb {
+    background: #2563eb;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .apply-textarea::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+    cursor: pointer;
+  }
+
+
+  body.dark-mode .apply-textarea::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  body.dark-mode .apply-textarea::-webkit-scrollbar-track {
+    background: #2c2c2c;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  body.dark-mode .apply-textarea::-webkit-scrollbar-thumb {
+    background: #9f9f9f;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  body.dark-mode .apply-textarea::-webkit-scrollbar-thumb:hover {
+    background: #9f9f9f;
+    cursor: pointer;
+  }
+</style>
+
+</html>
